@@ -1,3 +1,4 @@
+gem 'rest-client', '=1.0.3'
 %w(rubygems config haml sinatra digest/md5 rack-flash json restclient models mini_fb).each  { |lib| require lib}
 set :sessions, true
 set :show_exceptions, false

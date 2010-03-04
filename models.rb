@@ -1,3 +1,4 @@
+%w(dm-core dm-timestamps dm-validations).each {|lib| gem lib, '=0.9.11'}
 %w(dm-core dm-timestamps dm-validations RMagick right_aws config).each  { |lib| require lib}
 include Magick
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://root:root@localhost/faceclone')
