@@ -2,3 +2,4 @@ dm-core --version '0.9.11'
 rest-client --version '1.0.3'
 rack-flash
 mini_fb
+right_aws
