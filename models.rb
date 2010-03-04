@@ -336,13 +336,13 @@ class Event
 
 end
 
-class Confirmed_Attendance
+class ConfirmedAttendance
   include DataMapper::Resource
   belongs_to :user
   belongs_to :event
 end
 
-class Pending_Attendance
+class PendingAttendance
   include DataMapper::Resource
   belongs_to :user
   belongs_to :event
