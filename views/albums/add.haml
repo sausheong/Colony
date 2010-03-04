@@ -1,0 +1,17 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+  .span-15
+    %h3 Create a new photo album
+    Create an album here. You can add a cover photo later on if you like.
+
+    %form{:method => 'post', :action => '/album/create'}
+      %p Name
+      %p
+        %input.span-10{:type => 'text', :name => 'name'}
+      %p Description
+      %p
+        %textarea.span-10{:name => 'description'}
+      %p
+        %input{:type => 'submit', :value => 'create album'}

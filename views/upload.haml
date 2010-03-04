@@ -1,0 +1,32 @@
+=snippet :'/snippets/top'
+.span-24
+  %h2 Upload photos to an album
+  - unless @albums.empty?
+    .span-24    
+      %form{:method => 'post', :action => '/upload', :enctype=>"multipart/form-data"}
+        Upload photos to this album - 
+        %select.span-8{:name => 'album_id'}
+          - @albums.each do |album|
+            %option{:value => "#{album.id}"} #{album.name}
+        %hr.space
+        %ol
+          %li
+            %input{:type => 'file', :name => 'file1', :size => 60}
+          %li
+            %input{:type => 'file', :name => 'file2', :size => 60}
+          %li
+            %input{:type => 'file', :name => 'file3', :size => 60}
+          %li
+            %input{:type => 'file', :name => 'file4', :size => 60}
+          %li
+            %input{:type => 'file', :name => 'file5', :size => 60}
+          %li
+            %input{:type => 'file', :name => 'file6', :size => 60}        
+    
+        %input{:type => 'submit', :value => 'upload'}
+        %input{:type => 'button', :value => 'home', :onclick => "location.href='/'"}
+    - else
+      %h3
+        Looks like you don't have any albums yet. 
+        %a{:href => "/album/add"} Create one 
+        before uploading photos!

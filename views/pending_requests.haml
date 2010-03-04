@@ -1,0 +1,22 @@
+=snippet :'/snippets/top'
+.span-3
+  %img.span-3{:src => "#{@user.photo_url}"}
+  =snippet :'/snippets/links'
+.span-15
+  %h3 Pending requests
+  - @user.requests.each do |req|
+    .span-13
+      .span-2
+        %img.span-2{:src => "#{req.from.photo_url}"}
+      .span-10 
+      #{req.text}
+      %br
+      %form{:id => "form_approve_#{req.id}", :method => 'post', :action => "/friend/#{req.id}"} 
+        %input{:type => 'hidden', :name => '_method', :value => 'put'}
+        %a{:href => '#', :onclick => '$("#form_approve_' + "#{req.id}" + '").submit();'} approve
+        \.
+        %a{:href => "/friend/ignore/#{req.id}"} ignore
+  
+    %hr.space
+.span-6.last
+    

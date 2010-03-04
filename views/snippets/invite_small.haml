@@ -1,0 +1,34 @@
+=snippet :'/snippets/fbinit'
+:javascript
+%div#fblogin
+  %fb:login-button{:onlogin => "$('#fblogin').hide();$('#fbuser').show();"}
+    %fb:intl 
+      Connect with Facebook
+%div#fbuser.hide
+  %fb:profile-pic{:uid => "loggedinuser", :'facebook-logo' =>"true", :linked => "true"}
+  %br
+  %a{:href => '/invite'}
+    Invite your Facebook friends!
+    
+:javascript
+  FB.init("2b68ef3e09f9a9bb3c5a244c46c6a11c", "xd_receiver.htm");
+  FB.ensureInit(function() { 
+    FB.Connect.get_status().waitUntilReady( function( status ) { 
+      switch ( status ) { 
+      case FB.ConnectState.connected: 
+        loggedIn = true; 
+      break; 
+      case FB.ConnectState.appNotAuthorized: 
+      case FB.ConnectState.userNotLoggedIn: 
+        loggedIn = false; 
+      } 
+    }); 
+  });   
+  if (loggedIn) {
+    $("#fblogin").hide();
+    $("#fbuser").show();
+  }
+  else {
+    $("#fblogin").show();
+    $("#fbuser").hide();    
+  }

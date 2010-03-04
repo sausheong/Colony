@@ -1,0 +1,40 @@
+=snippet :'/snippets/top'
+=snippet :'/snippets/album_inline_js'
+.span-24.last
+  .span-3
+    %img.span-3{:src => "#{@album.user.photo_url}"}
+  .span-15.last
+    - if @user == @album.user
+      %h3.edit_name{:style => 'margin-bottom: 0;'} #{@album.name}
+      %h4.edit_area #{@album.description}
+    - else
+      %h3{:style => 'margin-bottom: 0;'} #{@album.name}
+      %h4 #{@album.description}      
+
+    - if @user == @album.user
+      %a{:href => "/album/#{@album.id}/upload"} Upload photos
+    - if @user
+      \- 
+      %a{:href => "/albums/#{@album.user.id}"} Back to albums    
+    - else
+      \-
+      %a{:href => "/user/#{@album.user.nickname}"} Back to albums
+
+    %hr.space
+
+    - if @user     
+      - if @album.photos.empty?
+        %h4
+          There are no photos in this album.
+          %a{:href => "/album/#{@album.id}/upload"} Upload some photos?
+    
+      - @album.photos.each  do |photo|
+        %a{:href => "/photo/#{photo.id}"}
+          %img.span-2{:src => "#{photo.url_thumbnail}"}
+
+  .span-6.last
+    %h3 Information
+
+    %h3 Photos  
+
+%hr.space       

@@ -1,0 +1,48 @@
+=snippet :'/snippets/top'
+
+.span-24.last
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'
+  .span-15    
+    %h3 Find your friends
+    %form{:method => 'get'}
+      Look for friends here - 
+      %input.span-8{:type => 'text', :name => 'query'}
+      %input{:type => 'submit', :value => 'search people'}  
+
+    - if @search_results
+      %hr.space
+      - @search_results.each do |res|
+        .span-1
+          %img.span-1{:src => "#{res.photo_url}"}          
+        .span-12  
+          - unless res == @user
+            %a{:href => "/#{res.nickname}"} #{res.formatted_name} 
+            (#{res.location})
+            %br
+            - if @user.friends.include? res
+              #{res.pronoun.capitalize} is your friend.
+            - else
+              %a{:href => "/request/#{res.id}"} add as friend
+          - else
+            This is me!  
+        %hr.space
+
+    %h3 Your friends
+    -@user.friends.each do |friend|
+      .span-2
+        %img.span-2{:src => "#{friend.photo_url}"}
+      .span-11
+        %a{:href => "/#{friend.nickname}"} #{friend.formatted_name} 
+        %br
+        #{friend.location}
+      .span-1
+        %form{:id => "form_friend_#{friend.id}", :method => 'post', :action => "/friend/#{friend.id}"} 
+          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+          %a{:href => '#', :onclick => '$("#form_friend_' + "#{friend.id}" + '").submit();', :class => 'remove_link'} 
+      %hr
+        
+  .span-6.last
+  
+    %h3 Suggestions

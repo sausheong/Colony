@@ -1,0 +1,48 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    %h3{:style => 'margin-bottom: 0;'} #{@user == @myself ? 'Your' : "#{@user.formatted_name}'s"} albums
+    %h4 
+      = "You follow #{@user.formatted_name}" if @user != @myself and @myself.follows.include? @user
+    - if @user == @myself
+      %a{:href => '/album/add'} Add a new album
+
+    %hr.space
+
+    -if @user.albums.empty? and @user == @myself
+      .span-24
+        Looks like you don't have any albums yet. Do you want to 
+        %a{:href => '/album/add'}create one?
+        
+    -@user.albums.each do |album|
+      %hr.space
+      .span-9
+        %h4{:style => 'margin-bottom:5px;'} 
+          %a{:href => "/album/#{album.id}"} #{album.name}
+        %h5 #{album.description}
+        %hr.space
+        - unless album.photos.empty?
+          %h4{:style => 'font-style: italic;'} (#{album.photos.size} photos in this album, last photo uploaded on #{album.photos.last.created_at.strftime('%d-%b-%Y')})
+      .span-3
+        - if album.cover_photo
+          %img.span-3{:src => "#{album.cover_photo.url_thumbnail}"}
+        - elsif !album.photos.empty?
+          %img.span-3{:src => "#{album.photos.first.url_thumbnail}"}
+        - else
+          %img.span-3{:src => "/images/album_icon.png"}
+      .span-2   
+        - if @user == @myself
+          - if album.photos.empty?
+            %form{:id => "form_#{album.id}", :method => 'post', :action => "/album/#{album.id}"} 
+              %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+              %a{:href => '#', :onclick => '$("#form_' + "#{album.id}" + '").submit();'} remove
+          %a{:href => "/album/#{album.id}/upload"} upload
+  .span-6.last
+    %h3 Information
+
+    %h3 Photos  
+
+%hr.space      

@@ -1,0 +1,8 @@
+%script{:type => "text/javascript", :src  => "/js/pixlr_minified.js"}
+:javascript
+  pixlr.settings.target = 'http://faceclone.saush.com/photo/save_edited/#{@photo.id}';
+  pixlr.settings.exit = "http://faceclone.saush.com/photo/#{@photo.id}";
+  pixlr.settings.credentials = true;
+  pixlr.settings.method = 'post';
+  pixlr.settings.locktarget = true;
+  

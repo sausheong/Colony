@@ -1,0 +1,10 @@
+=snippet :'/snippets/text_limiter_js'
+What's on your mind?
+%form{:method => 'post', :action => '/update'}
+  %textarea.update.span-15#update{:name => 'status', :rows => 2, :onKeyDown => "text_limiter($('#update'), $('#counter'))"}
+  .span-6
+    %span#counter
+      160
+    characters left
+  .prepend-12
+    %input#button{:type => 'submit', :value => 'update'}

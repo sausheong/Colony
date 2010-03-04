@@ -1,0 +1,124 @@
+=snippet :'/snippets/top'
+=snippet :'/snippets/annotations_js'
+=snippet :'/snippets/photo_inline_js'
+
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    .span-3
+      %a{:href => "/album/#{@photo.album.id}"} Back to album
+    - if @user == @photo.album.user
+      .span-3
+        %a{:href => '#', :id => 'add_annotation' } annotate photo
+      .span-3
+        %form{:id => "form_cover_photo", :method => 'post', :action => "/album/cover/#{@photo.id}"} 
+          %a{:href => '#', :onclick => '$("#form_cover_photo").submit();'} set album cover
+      .span-3
+        %form{:id => "form_photo_#{@photo.id}", :method => 'post', :action => "/photo/#{@photo.id}"} 
+          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+          %a{:href => '#', :onclick => '$("#form_photo_' + "#{@photo.id}" + '").submit();'} delete photo      
+
+
+    - if @user === @photo.album.user
+      %h2.edit_title #{@photo.title}
+    - else
+      %h2 #{@photo.title}
+    %img{:id => 'photo', :src => "#{@photo.url_display}"}
+    - if @user === @photo.album.user
+      %h4.edit_area #{@photo.caption}
+    - else
+      %h4 #{@photo.caption}
+
+    -@photo.comments.each do |comment|
+      .span-13
+        .span-2
+          %img.span-2{:src => "#{comment.user.photo_url}"}
+        .span-10
+          .span-10
+            %a.strong{:href => "/follow/#{comment.user.id}"} #{comment.user.formatted_name} says:
+          .span-10
+            =comment.text  
+      .span-2  
+        - if @user == comment.user
+          %form{:id => "form_comment_#{comment.id}", :method => 'post', :action => "/comment/#{comment.id}"} 
+            %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+            %a{:href => '#', :onclick => '$("#form_comment_' + "#{comment.id}" + '").submit();'} [remove] 
+      %hr.space
+
+    %h3 Comments
+    %form{:method => 'post', :action => "/comment/#{@photo.id}"}
+      %textarea.span-13.update{:name => 'text', :rows => '3'}
+      %br
+      %input{:type => 'submit', :value => 'post comment'}
+
+  
+  .span-6.last
+    %img.span-1{:src => "#{@photo.album.user.photo_url}"}  
+    Uploaded on #{@photo.created_at.strftime("%d %b %Y")} by
+    - if @user
+      %form{:id => "form_create_#{@photo.album.user.id}", :method => 'post', :action => "/follow/#{@photo.album.user.id}"} 
+        %input{:type => 'hidden', :name => '_method', :value => 'put'}
+        %a{:href => '#', :onclick => '$("#form_create_' + "#{@photo.album.user.id}" + '").submit();'} 
+          =@photo.album.user.formatted_name
+    - else
+      =@photo.album.user.formatted_name
+    %h4 
+      This photo is
+      - if @user === @photo.album.user
+        %b.edit_privacy #{@photo.privacy}    
+      - else
+        %b #{@photo.privacy}    
+    - if @user === @photo.album.user 
+      %h3 Annotations
+      - if @photo.annotations.empty?
+        %h4 No annotations on this photo.
+      - else 
+        - @photo.annotations.each do |note|
+          .span-6
+            =note.description
+          .span-3
+            %form{:id => "form_#{note.id}", :method => 'post', :action => "/annotation/#{note.id}"} 
+              %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+              %a{:href => '#', :onclick => '$("#form_' + "#{note.id}" + '").submit();'} [remove]
+        %hr.space
+      
+    
+    %h3 #{@photo.album.name} 
+    
+    - if @prev_in_album
+      %a{:href => "/photo/#{@prev_in_album.id}"}
+        %img.span-2{:src => "#{@prev_in_album.url_thumbnail}"}
+    - else
+      %img.span-2{:src => '/images/spacer.gif'}
+    - if @next_in_album
+      %a{:href => "/photo/#{@next_in_album.id}"}
+        %img.span-2{:src => "#{@next_in_album.url_thumbnail}"}       
+    - else
+      %img.span-2{:src => '/images/spacer.gif'}
+    %br                
+    - if @prev_in_album
+      %a{:href => "/photo/#{@prev_in_album.id}"}
+        %img.span-2{:src => "/images/left_arrow.gif"}
+    %a{:href => "/album/#{@photo.album.id}"}
+      %img.span-2{:src => "/images/browse.gif"}              
+    - if @next_in_album
+      %a{:href => "/photo/#{@next_in_album.id}"}
+        %img.span-2{:src => "/images/right_arrow.gif"} 
+
+%hr.space
+  
+.span-24
+  #annotation_form
+    %form{:id => 'annotation_add_form', :method => 'post', :action => "/annotation/#{@photo.id}"}
+      %fieldset
+        %legend
+        %input{:name => 'annotation[x1]', :type => 'hidden', :id => 'annotation_x1'}
+        %input{:name => 'annotation[y1]', :type => 'hidden', :id => 'annotation_y1'}
+        %input{:name => 'annotation[height]', :type => 'hidden', :id => 'annotation_height'}
+        %input{:name => 'annotation[width]', :type => 'hidden', :id => 'annotation_width'}
+        %textarea{:name => 'annotation[text]', :id => 'annotation_text'}
+      .submit
+        %input{:type => 'submit', :value => 'add'}
+        %input{:type => 'button', :value => 'cancel', :id => 'cancel_note'}

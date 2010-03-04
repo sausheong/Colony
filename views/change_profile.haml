@@ -1,0 +1,67 @@
+=snippet :'/snippets/top'
+-if flash[:error]
+  .span-14.prepend-2.last
+    .error 
+      =flash[:error]
+
+.span-24.last
+  %h4 Please provide some information for your new account. Put in at least a nickname, else we'll generate one for you! (you can change it later though)
+
+
+%form{:method => 'post', :action => '/save_profile' }
+
+  .span-5 
+    A nickname for your account
+  .span-18.last
+    %input{:type => 'text', :name => 'nickname'}
+  .span-5
+    Your name
+  .span-18.last
+    %input.span-12{:type => 'text', :name => 'formatted_name'}
+    
+  %hr
+  
+  .span-5
+    Where are you?
+  .span-18.last
+    %input.span-12{:type => 'text', :name => 'location'}
+
+  .span-5
+    Sex
+  .span-18.last
+    %select{:id => 'sex', :name => 'sex'}
+      %option{:value => 0 } Select Sex:
+      %option{:value => 'Female' } Female
+      %option{:value => 'Male'} Male
+
+  .span-5
+    Relationship status
+  .span-18.last
+    %select{:id => 'relationship_status', :name => 'relationship_status'}
+      %option{:value => 0} Select Relationship Status:
+      %option{:value => 'Single'} Single
+      %option{:value => 'In a Relationship'} In a Relationship
+      %option{:value => 'Married'} Married
+      %option{:value => 'Engaged'} Engaged
+      %option{:value => 'Its Complicated'} It's Complicated
+        
+  %hr
+
+  .span-5
+    Brief description of yourself
+  .span-18.last
+    %textarea.span-10{:rows => 3, :name => 'description'}
+
+  .span-5
+    Interests
+  .span-18.last
+    %textarea.span-10{:name => 'interests'}
+
+  .span-5
+    Education
+  .span-18.last
+    %textarea.span-10{:name => 'education'}
+
+  %hr.space
+
+  %input{:type => 'submit', :value => 'save'}

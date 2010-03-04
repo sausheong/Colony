@@ -1,0 +1,14 @@
+.span-24.last{:style => 'background: #3b5998 '}
+  .span-2
+    %a{:href => '/'} 
+      %img{:src => '/images/top_logo3.png'}
+  - if @user
+    .span-9.prepend-13.last
+      %a.topbar{:href =>"/#{@user.nickname}"} #{@user.nickname} -
+      %a.topbar{:href => '/'} home -
+      %a.topbar{:href => '/profile'}  profile -  
+      %a.topbar{:href => '/friends'}  friends -  
+      %a.topbar{:href => '/logout'}  logout       
+  - else
+    .span-2.prepend-20.last  
+      %a.topbar.rpxnow{:onclick => "return false;", :href => "https://faceclone.rpxnow.com/openid/v2/signin?token_url=#{@token}" } sign in

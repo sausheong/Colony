@@ -1,0 +1,11 @@
+%script{:type => "text/javascript", :src  => "/js/jeditable.mini.js"}
+:javascript
+  $(document).ready(function() {
+       $('.edit_name').editable('/album/name/#{@album.id}');
+       $('.edit_area').editable('/album/description/#{@album.id}', { 
+                type    : 'textarea',
+                submit  : 'OK',
+                cancel  : 'Cancel',
+                height  : 60
+            });
+   });

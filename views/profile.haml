@@ -1,0 +1,62 @@
+=snippet :'/snippets/top'
+.span-24.last
+  %h2 Change your profile here
+%form{:method => 'post', :action => '/save_profile' }
+  .span-5 
+    A nickname for your account
+  .span-18.last
+    %input{:type => 'text', :name => 'nickname', :value => "#{@user.nickname}"}
+  .span-5
+    Your name
+  .span-18.last
+    %input.span-10{:type => 'text', :name => 'formatted_name', :value => "#{@user.formatted_name}"}
+
+  %hr
+
+  .span-5
+    Where are you?
+  .span-18.last
+    %input.span-10{:type => 'text', :name => 'location', :value => "#{@user.location}"}
+
+  %hr
+
+  .span-5
+    Sex
+  .span-18.last
+    %select{:id => 'sex', :name => 'sex'}
+      %option{:value => 0, :selected => (@user.sex == '0' ? true : false) } Select Sex:
+      %option{:value => 'Female', :selected => (@user.sex == 'Female' ? true : false) } Female
+      %option{:value => 'Male', :selected => (@user.sex == 'Male' ? true : false)} Male
+
+  .span-5
+    Relationship status
+  .span-18.last
+    %select{:id => 'relationship_status', :name => 'relationship_status'}
+      %option{:value => 0,                   :selected => @user.relationship_status == 0  ? true : false } Select Relationship Status:
+      %option{:value => 'Single',            :selected => @user.relationship_status == 'Single'} Single
+      %option{:value => 'In a Relationship', :selected => @user.relationship_status == 'In a Relationship' ? true : false} In a Relationship
+      %option{:value => 'Married',           :selected => @user.relationship_status == 'Married' ? true : false} Married
+      %option{:value => 'Engaged',           :selected => @user.relationship_status == 'Engaged' ? true : false} Engaged
+      %option{:value => 'Its Complicated',   :selected => @user.relationship_status == 'Its Complicated' ? true : false} It's Complicated
+
+
+  .span-5
+    Brief description of yourself
+  .span-18.last
+    %input.span-10{:type => 'text', :name => 'description', :value => "#{@user.description}"}
+
+
+  .span-5
+    Interests
+  .span-18.last
+    %textarea.span-10{:name => 'interests'}#{@user.interests}
+
+  .span-5
+    Education
+  .span-18.last
+    %textarea.span-10{:name => 'education'}#{@user.education}
+
+
+
+  .span-2.prepend-13
+    %input{:type => 'submit', :value => 'save profile'}

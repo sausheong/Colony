@@ -1,0 +1,19 @@
+%script{:type => "text/javascript", :src  => "/js/jeditable.mini.js"}
+:javascript
+  $(document).ready(function() {
+     $('.edit_title').editable('/photo/title/#{@photo.id}');
+     $('.edit_area').editable('/photo/caption/#{@photo.id}', { 
+        type    : 'textarea',
+        submit  : 'OK',
+        cancel  : 'Cancel',
+        height  : 60
+      });
+      $('.edit_privacy').editable('/photo/privacy/#{@photo.id}', { 
+        data   : " {'public':'public','private':'private'}",
+        type   : 'select',
+        submit : 'OK',
+        style  : 'display: inline'
+      });
+       
+   });
+  

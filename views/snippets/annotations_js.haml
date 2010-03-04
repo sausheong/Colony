@@ -1,0 +1,30 @@
+:javascript
+	notes = [ #{@notes} ];
+  
+	$(window).load(function () {
+	$('#photo').img_annotations(); //If your notes data is is not named notes pass it
+
+	$('#cancel_note').click(function(){
+		$('#photo').imgAreaSelect({ hide: true });
+		$('#annotation_form').hide();
+	});
+
+	$('#add_annotation').click(function(){
+		$('#photo').imgAreaSelect({ onSelectChange: show_add_annotation, x1: 120, y1: 90, x2: 280, y2: 210 });
+			return false;
+		});
+	});
+
+	function show_add_annotation (img, area) {
+		imgOffset = $(img).offset();
+		form_left  = parseInt(imgOffset.left) + parseInt(area.x1);
+		form_top   = parseInt(imgOffset.top) + parseInt(area.y1) + parseInt(area.height)+5;
+
+		$('#annotation_form').css({ left: form_left + 'px', top: form_top + 'px'});
+		$('#annotation_form').show();
+		$('#annotation_form').css("z-index", 10000);
+		$('#annotation_x1').val(area.x1);
+		$('#annotation_y1').val(area.y1);
+		$('#annotation_height').val(area.height);
+		$('#annotation_width').val(area.width);
+	}	

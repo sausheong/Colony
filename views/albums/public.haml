@@ -1,0 +1,28 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-2
+    %img.span-2{:src => "#{@viewed_user.photo_url}"}
+  .span-9
+    %h2{:style => 'margin-bottom: 0;'} #{@viewed_user.formatted_name}'s albums
+    %h3 #{@viewed_user.description} 
+      
+%hr.space
+
+-@viewed_user.albums.each do |album|
+  %hr
+  .span-24
+    .span-17
+      %h3{:style => 'margin-bottom:5px;'} 
+        %a{:href => "/album/#{album.id}"} #{album.name}
+      %h4 #{album.description}
+      %hr.space
+      - unless album.photos.empty?
+        %h4{:style => 'font-style: italic;'} (#{album.photos.size} photos in this album, last photo uploaded on #{album.photos.last.created_at.strftime('%d-%b-%Y')})
+    .span-3
+      - if album.cover_photo
+        %img.span-3{:src => "#{album.cover_photo.url_display}"}
+      - elsif !album.photos.empty?
+        %img.span-3{:src => "#{album.photos.first.url_display}"}
+      - else
+        %img.span-3{:src => "/images/album_icon.png"}
+

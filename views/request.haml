@@ -1,0 +1,17 @@
+=snippet :'/snippets/top'
+.span-3
+  %img.span-3{:src => "#{@user.photo_url}"}
+  =snippet :'/snippets/links'
+.span-20.last
+  %h3 Add #{@friend.formatted_name} as a friend?
+  %h4 #{@friend.formatted_name} will have to confirm that you are friends.
+
+  %form{:action => '/request', :method => 'post'}
+    .span-20 Add a personalized message (optional)
+    .span-20
+      %textarea.span-10{:name => 'text'}
+    %input{:type => 'hidden', :name => '_method', :value => 'put'}
+    %input{:type => 'hidden', :name => 'receiverid', :value => "#{@friend.id}"}
+    
+    %input{:type => 'submit', :value => 'send request'}
+  

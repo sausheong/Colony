@@ -1,0 +1,15 @@
+.activities
+  -@all.each do |item|
+    .span-1
+      %img.span-1{:src => "#{item.user.photo_url}"}
+    .span-13.last
+      =item.text
+      .span-12.last
+        %em.quiet
+          =time_ago_in_words(item.created_at.to_time)
+      .span-12.last
+        %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} comment
+        &nbsp;
+        %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} like
+    
+    %hr.space

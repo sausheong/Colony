@@ -1,0 +1,141 @@
+li {
+  margin-bottom: 1em;
+}
+
+textarea.update {
+  height: auto;
+}
+#button {
+  background-image:url(/round-btn.gif);
+  border:0 none;
+  color:#666666;
+  font-size:14px;
+  height:32px;
+  margin-left:3px;
+  width:110px;
+
+}
+.title {
+  margin-top: 0.4em;
+  font-size: 6.5em;
+  font-family: 'Comic Sans MS', Textile, cursive;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.banner {
+  font-size: 2.8em;
+  font-family: 'Comic Sans MS', Textile, cursive;
+}
+.rpx_popup_table {
+  width: auto;
+}
+
+.comic {
+  font-family: 'Comic Sans MS', Textile, cursive;
+}
+
+.top-padding {
+  padding-top: 150px;
+}
+
+.smallpic {
+  padding: 2px;
+}
+
+.note {
+  display: none;
+  background: url(/images/spacer.gif); 
+  border: 2px solid rgb(255, 255, 255); 
+  overflow: hidden; 
+  position: absolute; 
+  z-index: 0;
+  cursor: text;
+}
+
+.notep {
+  display: none; 
+  background: #eee; 
+  font-size: 8pt; 
+  margin-top: 0px; 
+  padding: 2px;
+  position: absolute;
+  width: 175px;
+  cursor: text;
+} 
+
+#annotation_form {
+  display: none;
+  position: absolute;
+  width: 200px;
+}
+
+#annotation_form textarea{
+  height: auto;
+  width: 250px;
+}
+
+#annotation_add_form fieldset {
+  margin: 0;
+  padding: 2px;
+  border: 0;
+}
+
+.icons_add_friend {
+  background-position:0 -461px;
+}
+
+.icons_photo  {
+  background-position:0 -1245px;
+}
+
+.icons_messages {
+  background-position:0 -621px;
+}
+
+.icons_event {
+  background-position:0 -188px;
+  height:17px;
+}
+
+.icons_friends {
+  background-position:0 -605px;
+}
+
+.icons_group {
+  background-position:0 -1165px;
+}
+
+.icons_pages  {
+  background-position:0 -1506px;
+  width:13px;
+}
+
+.icons_messages {
+  background-position:0 -621px;
+}
+
+.icons {
+  background-image:url("/images/icons.png");
+  background-repeat:no-repeat;
+  display:inline-block;
+  height:16px;
+  width:16px;
+}
+
+.remove_link  {
+  background:url("/images/remove.gif") no-repeat scroll left top transparent;
+  display:block;
+  height:18px;
+  width:18px;
+}
+
+.remove_link:hover  {
+  background-position: right top;
+  text-decoration: none;
+}
+
+.subtitle {color: #95a5c6; font-size: 20px;}
+h3 {font-size: 16px; margin-top: 10px; padding-bottom: 5px; color: #3b5998; border-bottom:1px solid #cccccc;}
+h2 {color: #0e1f5b;}  
+.picbox {height: 130px;}
+a.topbar{color: #fff; text-decoration: none; font-size: 130%;}

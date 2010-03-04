@@ -1,0 +1,6 @@
+- @user.friends[0..11].each do |f|
+  %a{:href => "/#{f.nickname}"}
+    %img.span-1{:src => "#{f.photo_url}"}
+
+%hr.space    
+%a{:href => "/friends"} view all

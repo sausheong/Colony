@@ -1,0 +1,22 @@
+=snippet :'/snippets/top'
+
+.span-24.last
+  .span-3
+    %img.span-3{:src => "#{@viewed_user.photo_url}"}
+    =snippet :'/snippets/links'  
+    %h3 Friends
+
+  .span-15
+    
+    %h3 Wall
+    =snippet :'/snippets/wall_box'
+    %hr.space
+    =snippet :'/snippets/activities'
+
+  .span-6.last
+    %h3 Information
+    
+    %h3 Photos  
+    =snippet :'/snippets/mini_album'
+    
+%hr.space

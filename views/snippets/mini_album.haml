@@ -1,0 +1,7 @@
+- @viewed_user.photos[0..15].each do |photo|
+  %a{:href => "/photo/#{photo.id}"}
+    %img.span-1{:src => photo.url_thumbnail }
+
+%hr.space
+%a{:href => '/albums'} view all
+    

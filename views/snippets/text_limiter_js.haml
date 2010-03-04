@@ -1,0 +1,8 @@
+:javascript
+  function text_limiter(field,counter_field) {
+    limit = 159;
+    if (field.val().length > limit) 
+      field.val(field.val().substring(0, limit));
+    else
+      counter_field.text(limit - field.val().length);
+  }

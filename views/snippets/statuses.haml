@@ -1,0 +1,19 @@
+.statuses
+  -@all.each do |item|
+    .span-1
+      %img.span-1{:src => "#{item.user.photo_url}"}
+    .span-13.last
+      %a{:href => "/#{item.user.nickname}"}
+        =item.user.nickname
+      &nbsp;
+      =item.text
+
+    .span-8.last
+      %em.quiet
+        =time_ago_in_words(item.created_at.to_time)
+    .span-8.last
+      %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} comment
+      &nbsp;
+      %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} like
+    
+    %hr.space

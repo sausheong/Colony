@@ -1,0 +1,6 @@
+- unless @user.requests.nil?
+  .icons.icons_add_friend
+  %a{:href => '/requests/pending'}    
+    You have #{@user.requests.size} friend request(s). 
+- else
+  No pending requests
