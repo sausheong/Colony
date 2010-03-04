@@ -1,7 +1,7 @@
 helpers do
 
   def get_user_profile_with(token)
-    response = RestClient.post 'https://rpxnow.com/api/v2/auth_info', 'token' => token, 'apiKey' => '84e5a2157b0d27eb4401c75e3d07381cc016ebd6', 'format' => 'json', 'extended' => 'true'
+    response = RestClient.post 'https://rpxnow.com/api/v2/auth_info', 'token' => token, 'apiKey' => RPX_API_KEY, 'format' => 'json', 'extended' => 'true'
     json = JSON.parse(response)
     return json['profile'] if json['stat'] == 'ok'
     raise LoginFailedError, 'Cannot log in. Try another account!' 
