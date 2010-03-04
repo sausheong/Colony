@@ -24,16 +24,19 @@ class User
   has n, :follows, :through => :relationships, :class_name => 'User', :remote_name => :user, :child_key => [:follower_id]
   has n, :statuses
   belongs_to :wall
-  belongs_to :group
+  has n, :groups, :through => Resource
   has n, :sent_messages, :class_name => 'Message', :through => Resource
   has n, :received_messages, :class_name => 'Message', :through => Resource
-  has n, :confirmed_events, :class_name => 'Event', :through => Resource
-  has n, :pending_events, :class_name => 'Event', :through => Resource 
+  has n, :confirmed_attendances  
+  has n, :confirmed_events, :through => :confirmed_attendances, :class_name => 'Event'
+  has n, :pending_attendances
+  has n, :pending_events, :through => :pending_attendances, :class_name => 'Event'
   has n, :requests
   has n, :albums
   has n, :photos, :through => :albums
   has n, :comments
   has n, :activities
+  has n, :pages
       
   validates_is_unique :nickname, :message => "Someone else has taken up this nickname, try something else!"
   after :create, :create_s3_bucket
@@ -309,7 +312,10 @@ class Group
   include DataMapper::Resource          
   
   property :id, Serial
-  has n, :members, :class_name => 'User'
+  property :name, String
+  property :description, String
+  has n, :pages
+  has n, :members, :class_name => 'User', :through => Resource
   belongs_to :wall
 end
 
@@ -318,18 +324,46 @@ class Event
   include DataMapper::Resource
   
   property :id, Serial
+  property :name, String
+  property :description, String
+  property :venue, String
+  property :date, DateTime
+  
+  has n, :pages
   has n, :confirmed, :class_name => 'User'
   has n, :pending, :class_name => 'User'
   belongs_to :wall
 
 end
 
-class Wall           
+class Confirmed_Attendance
   include DataMapper::Resource
-  
+  belongs_to :user
+  belongs_to :event
+end
+
+class Pending_Attendance
+  include DataMapper::Resource
+  belongs_to :user
+  belongs_to :event
+end
+
+
+
+class Wall           
+  include DataMapper::Resource  
   property :id, Serial
   has n, :posts
   
+end
+
+
+class Page
+  include DataMapper::Resource
+  property :id, Serial
+  property :title, String
+  property :body, Text
+  property :date_created, DateTime
 end
 
 
