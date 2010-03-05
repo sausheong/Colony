@@ -18,7 +18,7 @@
           %img.span-1{:src => "#{res.photo_url}"}          
         .span-12  
           - unless res == @user
-            %a{:href => "/#{res.nickname}"} #{res.formatted_name} 
+            %a{:href => "/user/#{res.nickname}"} #{res.formatted_name} 
             (#{res.location})
             %br
             - if @user.friends.include? res
@@ -34,7 +34,7 @@
       .span-2
         %img.span-2{:src => "#{friend.photo_url}"}
       .span-11
-        %a{:href => "/#{friend.nickname}"} #{friend.formatted_name} 
+        %a{:href => "/user/#{friend.nickname}"} #{friend.formatted_name} 
         %br
         #{friend.location}
       .span-1

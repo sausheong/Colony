@@ -26,12 +26,11 @@ class User
   has n, :statuses
   belongs_to :wall
   has n, :groups, :through => Resource
-  has n, :sent_messages, :class_name => 'Message', :through => Resource
-  has n, :received_messages, :class_name => 'Message', :through => Resource
-  has n, :confirmed_attendances  
-  has n, :confirmed_events, :through => :confirmed_attendances, :class_name => 'Event'
-  has n, :pending_attendances
-  has n, :pending_events, :through => :pending_attendances, :class_name => 'Event'
+  has n, :sent_messages, :class_name => 'Message'
+  has n, :received_messages, :class_name => 'Message'
+  has n, :events, :through => Resource
+  has n, :pendings
+  has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:id], :parent_key => [:user_id]
   has n, :requests
   has n, :albums
   has n, :photos, :through => :albums
@@ -114,6 +113,18 @@ end
 URL_REGEXP = Regexp.new('\b ((https?|telnet|gopher|file|wais|ftp) : [\w/#~:.?+=&%@!\-] +?) (?=[.:?\-] * (?: [^\w/#~:.?+=&%@!\-]| $ ))', Regexp::EXTENDED)
 AT_REGEXP = Regexp.new('@[\w.@_-]+', Regexp::EXTENDED)
 
+class Message
+  include DataMapper::Resource
+  property :id, Serial
+  property :subject, String
+  property :text, Text
+  property :created_at,  DateTime  
+  property :read, Boolean
+  
+  belongs_to :sender, :class_name => 'User', :child_key => [:user_id]
+  belongs_to :recipient, :class_name => 'User', :child_key => [:recipient_id]  
+end
+
 class Status
   include DataMapper::Resource
 
@@ -179,20 +190,6 @@ class Activity
   has n, :likes
   belongs_to :user
 end
-
-class Message
-  include DataMapper::Resource 
-  
-  property :id, Serial
-  property :created_at,  DateTime
-  property :text, Text
-  
-  has n, :sender, :class_name => 'User', :through => Resource
-  has n, :recipient, :class_name => 'User', :through => Resource
-  
-end
-
-
 
 class Photo
   include DataMapper::Resource
@@ -331,22 +328,22 @@ class Event
   property :date, DateTime
   
   has n, :pages
-  has n, :confirmed, :class_name => 'User'
-  has n, :pending, :class_name => 'User'
+  
+  has n, :users, :through => Resource
+  has n, :pendings
+  has n, :pending_users, :through => :pendings, :class_name => 'User', :child_key => [:id], :parent_key => [:event_id]  
+
   belongs_to :wall
 
 end
 
-class ConfirmedAttendance
+class Pending
   include DataMapper::Resource
-  belongs_to :user
-  belongs_to :event
-end
+  property :id, Serial
 
-class PendingAttendance
-  include DataMapper::Resource
-  belongs_to :user
-  belongs_to :event
+  belongs_to :pending_user, :class_name => 'User', :child_key => [:user_id]
+  belongs_to :pending_event, :class_name => 'Event', :child_key => [:event_id]
+
 end
 
 
@@ -365,6 +362,7 @@ class Page
   property :title, String
   property :body, Text
   property :date_created, DateTime
+  belongs_to :user
 end
 
 

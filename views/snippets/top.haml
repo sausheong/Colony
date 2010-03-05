@@ -4,9 +4,9 @@
       %img{:src => '/images/colony_header.png'}
   - if @user
     .span-9.prepend-13.last
-      %a.topbar{:href =>"/#{@user.nickname}"} #{@user.nickname} -
+      %a.topbar{:href =>"/user/#{@user.nickname}"} #{@user.nickname} -
       %a.topbar{:href => '/'} home -
-      %a.topbar{:href => '/profile'}  profile -  
+      %a.topbar{:href => '/user/profile'}  profile -  
       %a.topbar{:href => '/friends'}  friends -  
       %a.topbar{:href => '/logout'}  logout       
   - else

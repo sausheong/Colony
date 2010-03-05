@@ -3,7 +3,7 @@
     .span-1
       %img.span-1{:src => "#{item.user.photo_url}"}
     .span-13.last
-      %a{:href => "/#{item.user.nickname}"}
+      %a{:href => "/user/#{item.user.nickname}"}
         =item.user.nickname
       &nbsp;
       =item.text

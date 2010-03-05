@@ -1,0 +1,49 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  
+  .span-20  
+    %h3 Messages
+    .span-4
+      %div.icons.icons_messages
+      %strong{:style => 'vertical-align:bottom;font-size:18px;'} #{@label}
+    .span-10 &nbsp;
+    .span-5
+      %a.button{:href =>'/messages/inbox'} inbox
+      %a.button{:href =>'/messages/sent_box'} sent
+      %a.button{:href =>'#', :onclick => "$('#compose_box').toggle();"} + new message
+    %hr.space
+    
+    #compose_box.span-15.push-1.hide
+      %form{:action => "/message/send", :method => 'post'}
+        Subject
+        %br
+        %input.span-10{:type => 'text', :name => 'subject'}
+        %br
+        Recipient (please enter nickname)
+        %br
+        %input.span-10{:type => 'text', :name => 'recipient'}
+        %br
+        Message
+        %br
+        %textarea.span-10{:name => 'text'}
+        %br
+        %input{:type => 'submit', :value => 'send'}
+    %hr
+      
+    #messages_list
+      - @messages.each do |msg|
+        .span-3
+          %img.span-2{:src => "#{msg.sender.photo_url}"}
+        .span-4 
+          %a{:href => "/usr/#{msg.sender.nickname}"} #{msg.sender.formatted_name}
+          .quiet #{msg.created_at.strftime '%b %d at %I:%M %p'}
+        .span-12 
+          .loud
+            %a{:href => "/message/#{msg.id}"} #{msg.subject}
+          #{msg.text}
+        .span-1 
+          &nbsp;
+        %hr
