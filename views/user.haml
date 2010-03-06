@@ -15,6 +15,10 @@
 
   .span-6.last
     %h3 Information
+    .span-5 Name : #{@viewed_user.formatted_name}
+    .span-5 Location : #{@viewed_user.location}    
+    .span-5 #{@viewed_user.description}
+    %hr.space
     
     %h3 Photos  
     =snippet :'/snippets/mini_album'

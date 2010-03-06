@@ -4,9 +4,15 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   .span-15
-    %h3 Events
+    %h3 Confirmed events
+    You have confirmed to attend the following events:
+    - @user.confirmed_events.each do |event|
+      .span
+      
+      
+    %h3 Pending events
+    You have been invited to these events:
+    - @user.pending_events.each do |event|
     
-    
-  
   .span-6.last
     %h3  Suggestions

@@ -1,11 +1,3 @@
-get "/user/:nickname" do
-  @myself = @user
-  @viewed_user = User.first(:nickname => params[:nickname])
-  @viewing_self = (@viewed_user == @myself)
-  @all = [] + @viewed_user.activities + @viewed_user.wall.posts
-  haml :user
-end
-
 get "/user/profile" do
   puts @user.inspect
   haml :profile
@@ -38,4 +30,12 @@ end
 post '/user/wall' do
   Post.create(:text => params[:status], :user => @user, :wall_id => params[:wallid])
   redirect "/user/#{params[:nickname]}"
+end
+
+get "/user/:nickname" do
+  @myself = @user
+  @viewed_user = User.first(:nickname => params[:nickname])
+  @viewing_self = (@viewed_user == @myself)
+  @all = [] + @viewed_user.activities + @viewed_user.wall.posts
+  haml :user
 end

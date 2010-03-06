@@ -1,0 +1,31 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  
+  .span-20  
+    %h3 #{@message.subject}
+    %a.button{:href =>'/messages/inbox'} back to inbox
+    %hr.space
+    
+    - @messages.each do |msg|
+      .span-2
+        %img.span-2{:src => "#{msg.sender.photo_url}"}
+      .span-17
+        #{msg.text}
+        %hr.space
+        #{msg.sender.formatted_name}
+        .quiet #{msg.created_at.strftime '%b %d at %I:%M %p'} 
+      %hr.space
+
+    %h3 Reply
+    %form{:action => "/message/send", :method => 'post'}
+      %input{:type => 'hidden', :name => 'subject', :value => "#{@message.subject}"}
+      %input{:type => 'hidden', :name => 'recipient', :value => "#{@message.sender.nickname}"}
+      %input{:type => 'hidden', :name => 'thread', :value => "#{@message.thread}"}
+      %textarea.span-10{:name => 'text'}
+      %br
+      %input{:type => 'submit', :value => 'send'}    
+    
+    

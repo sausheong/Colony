@@ -1,5 +1,4 @@
 get '/events' do
-  
   haml :'/events/manage'
 end
 

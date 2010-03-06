@@ -1,7 +1,11 @@
 %hr.space
 .span-3
   .icons.icons_messages
-  %a{:href => '/messages/inbox'} Messages
+  - num_unread_msgs =  @user.received_messages.all(:read => false).size
+  %a{:href => '/messages/inbox'} Messages 
+  - if num_unread_msgs > 0
+    (#{num_unread_msgs})
+    
 .span-3
   .icons.icons_event
   %a{:href => '/events'} Events

@@ -26,8 +26,8 @@ class User
   has n, :statuses
   belongs_to :wall
   has n, :groups, :through => Resource
-  has n, :sent_messages, :class_name => 'Message'
-  has n, :received_messages, :class_name => 'Message'
+  has n, :sent_messages, :class_name => 'Message', :child_key => [:user_id]
+  has n, :received_messages, :class_name => 'Message', :child_key => [:recipient_id]
   has n, :events, :through => Resource
   has n, :pendings
   has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:id], :parent_key => [:user_id]
@@ -98,8 +98,8 @@ class Relationship
   after :save, :add_activity
   
   def add_activity
-    Activity.create(:user => user, :activity_type => 'relationship', :text => "<a href='/#{user.nickname}'>#{user.formatted_name}</a> and <a href='/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
-    Activity.create(:user => follower, :activity_type => 'relationship', :text => "<a href='/#{follower.nickname}'>#{follower.formatted_name}</a> and <a href='/#{user.nickname}'>#{user.formatted_name}</a> are now friends.")    
+    Activity.create(:user => user, :activity_type => 'relationship', :text => "You and <a href='/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
+    Activity.create(:user => follower, :activity_type => 'relationship', :text => "You and <a href='/#{user.nickname}'>#{user.formatted_name}</a> are now friends.")    
   end  
 end
 
@@ -119,7 +119,8 @@ class Message
   property :subject, String
   property :text, Text
   property :created_at,  DateTime  
-  property :read, Boolean
+  property :read, Boolean, :default => false
+  property :thread, Integer
   
   belongs_to :sender, :class_name => 'User', :child_key => [:user_id]
   belongs_to :recipient, :class_name => 'User', :child_key => [:recipient_id]  

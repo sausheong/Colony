@@ -1,3 +1,6 @@
+- if @viewed_user.photos.empty?
+  #{@viewed_user.formatted_name} has not uploaded any photos yet.
+
 - @viewed_user.photos[0..15].each do |photo|
   %a{:href => "/photo/#{photo.id}"}
     %img.span-1{:src => photo.url_thumbnail }

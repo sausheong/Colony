@@ -39,7 +39,7 @@ post "/after_login" do
   end
 end
 
-%w(user friends photos messages events).each {|feature| load "#{feature}.rb"}
+%w(friends photos messages events user).each {|feature| load "#{feature}.rb"}
 
 before do
   @token = "http://#{env["HTTP_HOST"]}/after_login"
