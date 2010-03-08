@@ -24,7 +24,8 @@
           2010    
 
   - unless @user
-    %script{:src => "https://rpxnow.com/openid/v2/widget", :type => "text/javascript"}
+    %script{:type => 'text/javascript'}
+      var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static."); document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));    
     %script{:type => "text/javascript"}
       RPXNOW.overlay = true;
       RPXNOW.language_preference = 'en'; 

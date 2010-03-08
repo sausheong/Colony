@@ -1,2 +1,2 @@
-%w(sinatra faceclone).each  { |lib| require lib}
+%w(sinatra colony).each  { |lib| require lib}
 run Sinatra::Application
