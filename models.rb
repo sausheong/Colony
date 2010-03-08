@@ -28,9 +28,10 @@ class User
   has n, :groups, :through => Resource
   has n, :sent_messages, :class_name => 'Message', :child_key => [:user_id]
   has n, :received_messages, :class_name => 'Message', :child_key => [:recipient_id]
-  has n, :events, :through => Resource
+  has n, :confirms
+  has n, :confirmed_events, :through => :confirms, :class_name => 'Event', :child_key => [:user_id], :mutable => true
   has n, :pendings
-  has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:id], :parent_key => [:user_id]
+  has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:user_id], :mutable => true
   has n, :requests
   has n, :albums
   has n, :photos, :through => :albums
@@ -84,6 +85,10 @@ class User
   def create_wall
     self.wall = Wall.create
     self.save
+  end
+
+  def all_events
+    confirmed_events + pending_events
   end
 
 end
@@ -327,27 +332,48 @@ class Event
   property :description, String
   property :venue, String
   property :date, DateTime
+  property :time, Time
   
+  belongs_to :user
   has n, :pages
-  
-  has n, :users, :through => Resource
+  has n, :confirms
+  has n, :confirmed_users, :through => :confirms, :class_name => 'User', :child_key => [:event_id], :mutable => true
   has n, :pendings
-  has n, :pending_users, :through => :pendings, :class_name => 'User', :child_key => [:id], :parent_key => [:event_id]  
+  has n, :pending_users, :through => :pendings, :class_name => 'User', :child_key => [:event_id], :mutable => true
+  has n, :declines
+  has n, :declined_users, :through => :declines, :class_name => 'User', :child_key => [:event_id], :mutable => true
 
   belongs_to :wall
-
+  after :create, :create_wall
+  
+  def create_wall
+    self.wall = Wall.create
+    self.save
+  end
+      
 end
 
 class Pending
   include DataMapper::Resource
   property :id, Serial
-
   belongs_to :pending_user, :class_name => 'User', :child_key => [:user_id]
   belongs_to :pending_event, :class_name => 'Event', :child_key => [:event_id]
 
 end
 
+class Decline
+  include DataMapper::Resource
+  property :id, Serial
+  belongs_to :declined_user, :class_name => 'User', :child_key => [:user_id]
+  belongs_to :declined_event, :class_name => 'Event', :child_key => [:event_id]  
+end
 
+class Confirm
+  include DataMapper::Resource
+  property :id, Serial
+  belongs_to :confirmed_user, :class_name => 'User', :child_key => [:user_id]
+  belongs_to :confirmed_event, :class_name => 'Event', :child_key => [:event_id]  
+end
 
 class Wall           
   include DataMapper::Resource  

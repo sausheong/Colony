@@ -4,15 +4,28 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   .span-15
-    %h3 Confirmed events
-    You have confirmed to attend the following events:
-    - @user.confirmed_events.each do |event|
-      .span
-      
-      
-    %h3 Pending events
-    You have been invited to these events:
-    - @user.pending_events.each do |event|
+    %h3 Events
+    .span-4
+      %div.icons.icons_event
+      %strong{:style => 'vertical-align:bottom;font-size:18px;'} Events
+    .span-6 &nbsp;
+    .span-2.push-2
+      %a.button{:href =>"/event/add"} new event
     
+    .span-15
+      
+      %hr
+      - @user.all_events.each do |event|
+        .span-12
+          %strong #{event.name}
+          .quiet #{event.description}
+          .quiet Venue : #{event.venue}
+          .quiet Date/time : #{event.time.strftime "%I:%M %p"}, #{event.date.strftime "%d %b %Y"}
+        .span-2
+          %a.button{:href => "/event/#{event.id}"} respond
+
+        %hr.space
+        %hr
+      
   .span-6.last
     %h3  Suggestions

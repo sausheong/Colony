@@ -1,6 +1,6 @@
 require 'rubygems'
 gem 'rest-client', '=1.0.3'
-%w(config haml sinatra digest/md5 rack-flash json restclient models mini_fb).each  { |lib| require lib}
+%w(config haml sinatra digest/md5 rack-flash json restclient models).each  { |lib| require lib}
 set :sessions, true
 set :show_exceptions, false
 use Rack::Flash
@@ -9,8 +9,6 @@ get "/" do
   if session[:userid].nil? then 
     haml :login 
   else
-    @fb_uid = request.cookies[FB_API_KEY + "_user"]
-    @fb_session = request.cookies[FB_API_KEY + "_session_key"]
     @all = @user.feed
     haml :landing
   end

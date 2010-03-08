@@ -153,3 +153,31 @@ h2 {color: #0e1f5b;}
 .picbox {height: 130px;}
 a.topbar{color: #fff; text-decoration: none; font-size: 130%;}
 a{text-decoration: none;}
+
+
+div.time-picker {
+  position: absolute;
+  height: 200px;
+  width:4em; /* needed for IE */
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #000;
+  z-index: 99;
+}
+div.time-picker-12hours {
+  width:6em; /* needed for IE */
+}
+
+div.time-picker ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.time-picker li {
+  padding: 0px;
+  cursor: pointer;
+}
+div.time-picker li.selected {
+  background: #316AC5;
+  color: #fff;
+}

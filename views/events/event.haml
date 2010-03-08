@@ -1,0 +1,62 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    
+    %h3 #{@event.name}
+    .span-14
+      .span-3 Date
+      .span-10 #{@event.date.strftime "%d %b %Y"}
+    .span-14
+      .span-3 Time
+      .span-10 #{@event.time.strftime "%I:%M %p"}
+    .span-14
+      .span-3 Venue
+      .span-10 #{@event.venue}
+    
+    %hr.space
+          
+    %h3 Description
+    =@event.description
+      
+    %h3 Confirmed attendees
+    - @event.confirmed_users.each do |user|
+      .span-2
+        %a{:href => "/user/#{user.nickname}"}
+          %img.span-1{:src => "#{user.photo_url}", :alt => "#{user.formatted_name}"} 
+    
+    %hr.space
+    
+    %h3 Awaiting reply
+    - @event.pending_users.each do |user|
+      .span-2
+        %a{:href => "/user/#{user.nickname}"}
+          %img.span-1{:src => "#{user.photo_url}", :alt => "#{user.formatted_name}"} 
+    
+    %hr.space
+    
+    %h3 Wall
+    =snippet :'/snippets/event_wall_box'
+      
+    %hr.space
+    
+    -@event.wall.posts.each do |post|
+      .span-2
+        %img.span-2{:src => "#{post.user.photo_url}"}
+      .span-4
+        #{post.user.formatted_name}
+        %br
+        #{post.created_at.strftime "%d %b %Y"}
+        %br
+        #{post.created_at.strftime "%I:%M %P"}
+      .span-8
+        #{post.text}
+      %hr
+    %hr.space
+    
+  .span-6.last
+    %h3 Your RSVP
+    =snippet :'/snippets/rsvp'
+    

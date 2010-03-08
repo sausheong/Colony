@@ -1,0 +1,9 @@
+%form{:action => "/event/#{@event.id}", :method => 'post'}
+  %p
+    %input{:type => :radio, :name => 'attendance', :value => 'yes', :checked => @event.confirmed_users.include?(@user) } Attending 
+  %p
+    %input{:type => :radio, :name => 'attendance', :value => 'maybe', :checked => @event.pending_users.include?(@user) } Maybe Attending
+  %p
+    %input{:type => :radio, :name => 'attendance', :value => 'no', :checked => @event.declined_users.include?(@user) } Not Attending
+
+  %input{:type => 'submit', :value => 'send'}
