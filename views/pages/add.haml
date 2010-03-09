@@ -1,0 +1,27 @@
+=snippet :'/snippets/top'
+
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'
+  .span-20
+    %h3 Create a new page    
+    Create a new page here. Use 
+    %a{:href => 'http://daringfireball.net/projects/markdown/basics'} markdown
+    for the body text and copy this link to be used elsewhere!
+    %hr.space
+    %form{:method => 'post', :action => '/page'}
+      - if @page.title.nil?
+        %input{:type => 'hidden', :name => '_method', :value => 'put'}
+      %input{:type => 'hidden', :name => 'id', :value => "#{@page.id}"}
+      %strong Title
+      %p
+        %input.span-10{:type => 'text', :name => 'title', :value => "#{@page.title}"}
+      %strong Body
+      %p
+        %textarea.span-14{:name => 'body', :style => 'height: 350px;'} #{@page.body}
+      %p  
+        - if @page.title.nil?
+          %input{:type => 'submit', :value => 'create this page'}    
+        - else
+          %input{:type => 'submit', :value => 'modify this page'}    

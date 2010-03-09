@@ -103,8 +103,8 @@ class Relationship
   after :save, :add_activity
   
   def add_activity
-    Activity.create(:user => user, :activity_type => 'relationship', :text => "You and <a href='/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
-    Activity.create(:user => follower, :activity_type => 'relationship', :text => "You and <a href='/#{user.nickname}'>#{user.formatted_name}</a> are now friends.")    
+    Activity.create(:user => user, :activity_type => 'relationship', :text => "You and <a href='/user/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
+    Activity.create(:user => follower, :activity_type => 'relationship', :text => "You and <a href='/user/#{user.nickname}'>#{user.formatted_name}</a> are now friends.")    
   end  
 end
 
@@ -154,7 +154,7 @@ class Status
         m.save 
       }
     end
-    Activity.create(:user => user, :activity_type => 'status', :text => "<a href='/#{user.nickname}'>#{user.formatted_name}</a> " + self.text )
+    Activity.create(:user => user, :activity_type => 'status', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> " + self.text )
   end
 
   # general scrubbing 
@@ -271,7 +271,7 @@ class Photo
   end           
   
   def add_activity
-    Activity.create(:user => album.user, :activity_type => 'photo', :text => "<a href='/#{album.user.nickname}'>#{album.user.formatted_name}</a> added a new photo - <a href='/photo/#{self.id}'><img class='span-1' src='#{self.url_thumbnail}'/></a>")
+    Activity.create(:user => album.user, :activity_type => 'photo', :text => "<a href='/user/#{album.user.nickname}'>#{album.user.formatted_name}</a> added a new photo - <a href='/photo/#{self.id}'><img class='span-1' src='#{self.url_thumbnail}'/></a>")
   end
     
 end
@@ -289,7 +289,7 @@ class Album
   after :save, :add_activity
   
   def add_activity
-    Activity.create(:user => user, :activity_type => 'album', :text => "<a href='/#{user.nickname}'>#{user.formatted_name}</a> created a new album <a href='/album/#{self.id}'>#{self.name}</a>")
+    Activity.create(:user => user, :activity_type => 'album', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> created a new album <a href='/album/#{self.id}'>#{self.name}</a>")
   end  
 end
 
@@ -307,7 +307,7 @@ class Annotation
   after :save, :add_activity
 
   def add_activity
-    Activity.create(:user => self.photo.album.user, :activity_type => 'annotation', :text => "<a href='/#{self.photo.album.user.nickname}'>#{self.photo.album.user.formatted_name}</a> annotated a photo - <a href='/photo/#{self.photo/id}'><img class='span-1' src='#{self.photo.url_thumbnail}'/></a> with '#{self.description}'")
+    Activity.create(:user => self.photo.album.user, :activity_type => 'annotation', :text => "<a href='/user/#{self.photo.album.user.nickname}'>#{self.photo.album.user.formatted_name}</a> annotated a photo - <a href='/photo/#{self.photo.id}'><img class='span-1' src='#{self.photo.url_thumbnail}'/></a> with '#{self.description}'")
   end
   
 end
@@ -350,6 +350,12 @@ class Event
     self.wall = Wall.create
     self.save
   end
+
+  after :create, :add_activity
+
+  def add_activity
+    Activity.create(:user => self.user, :activity_type => 'event', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a new event - <a href='/event/#{self.id}'>#{self.name}</a>.'")
+  end
       
 end
 
@@ -388,8 +394,15 @@ class Page
   property :id, Serial
   property :title, String
   property :body, Text
-  property :date_created, DateTime
+  property :created_at, DateTime
   belongs_to :user
+  
+  after :create, :add_activity
+
+  def add_activity
+    Activity.create(:user => self.user, :activity_type => 'page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/page/#{self.id}'>#{self.title}</a>.")
+  end
+  
 end
 
 

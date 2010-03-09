@@ -19,6 +19,11 @@ put '/event' do
   redirect "/event/#{e.id}"
 end
 
+delete '/event/:id' do
+  e = Event.get params[:id]
+  e.destroy
+  redirect '/events'
+end
 
 get '/event/:id' do
   @event = Event.get params[:id]

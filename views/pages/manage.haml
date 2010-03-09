@@ -1,0 +1,27 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    %h3 Pages
+    .span-2.push-12
+      %a.button{:href =>"/page/add"} new page
+    
+    .span-15      
+      %hr
+      - @user.pages.each do |page|
+        .span-12
+          %strong 
+            %a{:href => "/page/#{page.id}" } #{page.title}
+          .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
+        .span-2
+          %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/page/#{page.id}"} 
+            %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+            %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} del
+            %a.button{:href => "/page/edit/#{page.id}"} edit
+        %hr.space
+        %hr
+
+  .span-6.last
+    %h3  Suggestions      

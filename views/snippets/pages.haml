@@ -1,0 +1,5 @@
+%h3 Pages
+%ul
+  - @user.pages.each do |page|
+    %li 
+      %a{:href => "/page/#{page.id}"}#{page.title}

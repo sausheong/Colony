@@ -12,18 +12,20 @@
     .span-2.push-2
       %a.button{:href =>"/event/add"} new event
     
-    .span-15
-      
+    .span-15      
       %hr
       - @user.all_events.each do |event|
-        .span-12
+        .span-11
           %strong #{event.name}
           .quiet #{event.description}
           .quiet Venue : #{event.venue}
           .quiet Date/time : #{event.time.strftime "%I:%M %p"}, #{event.date.strftime "%d %b %Y"}
-        .span-2
-          %a.button{:href => "/event/#{event.id}"} respond
-
+        .span-3
+          %form{:id => "form_event_#{event.id}", :method => 'post', :action => "/event/#{event.id}"} 
+            %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+            - if event.user == @user
+              %a.button{:href => '#', :onclick => '$("#form_event_' + "#{event.id}" + '").submit();'} delete
+            %a.button{:href => "/event/#{event.id}"} respond              
         %hr.space
         %hr
       
