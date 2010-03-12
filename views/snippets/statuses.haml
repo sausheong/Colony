@@ -11,9 +11,28 @@
     .span-8.last
       %em.quiet
         =time_ago_in_words(item.created_at.to_time)
+
     .span-8.last
-      %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} comment
+      %a{:href =>"#", :onclick => "$('#comment_box_#{item.class.to_s}_#{item.id}').toggle();$('#comment_box_#{item.class.to_s}_#{item.id}').focus();"} comment
       &nbsp;
       %a{:href =>"#", :onclick => "$('#update').attr('value','@#{item.user.nickname} ');$('#update').focus();"} like
-    
-    %hr.space
+
+    .span-13.hide.last{:id => "comment_box_#{item.class.to_s}_#{item.id}"}
+      %form{:method => 'post', :action => "/comment/#{item.class.to_s.downcase}/#{item.id}"}
+        %textarea.span-6{:name => 'text'}
+        %input{:type => 'hidden', :name => 'return_url', :value => request.url.to_s}
+        %input{:type => 'hidden', :name => '_method', :value => 'put'}
+        %br
+        %input{:type => 'submit', :value => 'comment'}
+
+
+    %hr.space{:style => 'height: 1px'}    
+
+    - unless item.comments.empty? 
+      .span-14.push-1.last
+        - item.comments.each do |comment|
+          .span-1
+            %img.span-1{:src => "#{comment.user.photo_url}"}
+          .span-12.last.box
+            #{comment.text}
+

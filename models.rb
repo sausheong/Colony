@@ -103,8 +103,7 @@ class Relationship
   after :save, :add_activity
   
   def add_activity
-    Activity.create(:user => user, :activity_type => 'relationship', :text => "You and <a href='/user/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
-    Activity.create(:user => follower, :activity_type => 'relationship', :text => "You and <a href='/user/#{user.nickname}'>#{user.formatted_name}</a> are now friends.")    
+    Activity.create(:user => user, :activity_type => 'relationship', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> and <a href='/user/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
   end  
 end
 
@@ -141,6 +140,8 @@ class Status
   belongs_to :user  
   has n, :mentions
   has n, :mentioned_users, :through => :mentions, :class_name => 'User', :child_key => [:user_id]
+  has n, :comments
+  has n, :likes
   
   before :save do
     @mentions = []
@@ -193,6 +194,7 @@ class Activity
   property :activity_type, String
   property :text, Text
   property :created_at, DateTime
+  has n, :comments
   has n, :likes
   belongs_to :user
 end
@@ -318,9 +320,24 @@ class Group
   property :id, Serial
   property :name, String
   property :description, String
+
   has n, :pages
   has n, :members, :class_name => 'User', :through => Resource
+  belongs_to :user
   belongs_to :wall
+  
+  after :create, :create_wall
+  
+  def create_wall
+    self.wall = Wall.create
+    self.save
+  end
+
+  after :create, :add_activity
+
+  def add_activity
+    Activity.create(:user => self.user, :activity_type => 'event', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a new group - <a href='/group/#{self.id}'>#{self.name}</a>.")
+  end  
 end
 
 
@@ -395,12 +412,23 @@ class Page
   property :title, String
   property :body, Text
   property :created_at, DateTime
+  has n, :comments
+  has n, :likes
   belongs_to :user
+  belongs_to :event
+  belongs_to :group
+  
   
   after :create, :add_activity
 
   def add_activity
-    Activity.create(:user => self.user, :activity_type => 'page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/page/#{self.id}'>#{self.title}</a>.")
+    if self.event
+      Activity.create(:user => self.user, :activity_type => 'event page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/event/page/#{self.id}'>#{self.title}</a> for the event <a href='/event/#{self.event.id}'>#{self.event.name}</a>.") 
+    elsif self.group
+      Activity.create(:user => self.user, :activity_type => 'group page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/group/page/#{self.id}'>#{self.title}</a> for the group <a href='/group/#{self.group.id}'>#{self.group.name}</a>.")       
+    else
+      Activity.create(:user => self.user, :activity_type => 'page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/page/#{self.id}'>#{self.title}</a>.")
+    end
   end
   
 end
@@ -414,6 +442,7 @@ class Post
   property :created_at, DateTime
   belongs_to :user
   belongs_to :wall
+  has n, :comments
   has n, :likes
 
 end         
@@ -426,6 +455,11 @@ class Comment
   property :id, Serial
   property :text, Text
   belongs_to :user
+  belongs_to :page
+  belongs_to :post
+  belongs_to :photo
+  belongs_to :activity
+  belongs_to :status
   has n, :likes
   
   

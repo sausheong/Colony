@@ -1,0 +1,24 @@
+=snippet :'/snippets/top'
+
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'
+  .span-20
+    %h3 Create a new group
+    Create a new group here, use it to share information!
+
+    %form{:method => 'post', :action => '/group'}
+      %input{:type => 'hidden', :name => '_method', :value => 'put'}
+      %p Name
+      %p
+        %input.span-10{:type => 'text', :name => 'name'}
+      %p Description
+      %p
+        %textarea.span-10{:name => 'description'}
+
+      %p People you want to invite to join
+      %p
+        %input.span-10{:type => 'text', :name => 'invites'}                
+      %p
+        %input{:type => 'submit', :value => 'create this group'}

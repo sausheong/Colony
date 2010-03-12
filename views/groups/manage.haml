@@ -1,0 +1,31 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    %hr.space
+    .span-3
+      %div.icons.icons_group
+      %strong{:style => 'vertical-align:bottom;font-size:18px;'} Groups
+    .span-8 &nbsp;
+    .span-4.last.right
+      %a.button{:href =>"/group/add"} new group
+    
+    .span-15      
+      %hr.space
+      - @user.groups.each do |group|
+        .span-11
+          %strong #{group.name}
+          .quiet #{group.description}
+        .span-4.last{:style => 'text-align:right;'}
+          %form{:id => "form_group_#{group.id}", :method => 'post', :action => "/group/#{group.id}"} 
+            %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+            - if group.user == @user
+              %a.button{:href => '#', :onclick => '$("#form_group_' + "#{group.id}" + '").submit();'} delete
+            %a.button{:href => "/group/#{group.id}"} view              
+        %hr.space
+        %hr
+      
+  .span-6.last
+    %h3  Suggestions

@@ -10,10 +10,15 @@
     %a{:href => 'http://daringfireball.net/projects/markdown/basics'} markdown
     for the body text and copy this link to be used elsewhere!
     %hr.space
-    %form{:method => 'post', :action => '/page'}
+    %form{:method => 'post', :action => "/#{owner}/page"}
       - if @page.title.nil?
         %input{:type => 'hidden', :name => '_method', :value => 'put'}
-      %input{:type => 'hidden', :name => 'id', :value => "#{@page.id}"}
+      - else
+        %input{:type => 'hidden', :name => 'id', :value => "#{@page.id}"}
+      - if owner == 'event'
+        %input{:type => 'hidden', :name => 'eventid', :value => "#{@event.id}"}
+      - if owner == 'group'
+        %input{:type => 'hidden', :name => 'groupid', :value => "#{@group.id}"}
       %strong Title
       %p
         %input.span-10{:type => 'text', :name => 'title', :value => "#{@page.title}"}
@@ -24,4 +29,4 @@
         - if @page.title.nil?
           %input{:type => 'submit', :value => 'create this page'}    
         - else
-          %input{:type => 'submit', :value => 'modify this page'}    
+          %input{:type => 'submit', :value => 'modify this page'}

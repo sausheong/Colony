@@ -5,7 +5,7 @@
     =snippet :'/snippets/links'    
   
   .span-20  
-    %h3 Messages
+    %hr.space
     .span-4
       %div.icons.icons_messages
       %strong{:style => 'vertical-align:bottom;font-size:18px;'} #{@label}
@@ -31,7 +31,7 @@
         %textarea.span-10{:name => 'text'}
         %br
         %input{:type => 'submit', :value => 'send'}
-    %hr
+      %hr.space
       
     #messages_list
       - @messages.each do |msg|

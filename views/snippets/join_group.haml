@@ -1,0 +1,11 @@
+- if @group.members.include? @user
+  You are a member of this group.
+  - unless @group.user == @user
+    %form{:method => 'post', :action => "/group/leave/#{@group.id}"}
+      %input{:type => 'submit', :value => 'leave this group'}
+  
+- else
+  You are not a member of this group yet.
+  %form{:method => 'post', :action => "/group/join/#{@group.id}"}
+    %input{:type => 'submit', :value => 'join this group'}
+    

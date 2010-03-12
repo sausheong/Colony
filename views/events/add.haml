@@ -30,6 +30,7 @@
         %input.span-2#time{:type => 'text', :name => 'time'}        
         :javascript
           $("#time").timePicker({
+            startTime: "08:00",
             show24Hours: false,
             separator: ':',
             step: 15});

@@ -3,7 +3,12 @@ get '/friends' do
     results = User.all(:nickname.like => params[:query] + '%') + User.all(:formatted_name.like => '%' + params[:query] + '%')
     @search_results = results.uniq[0..24]
   end  
-  haml :friends
+  haml :friends, :locals => {:show_search => true, :user => @user}
+end
+
+get '/friends/:id' do
+  viewed_user = User.get params[:id]
+  haml :friends, :locals => {:show_search => false, :user => viewed_user}
 end
 
 get '/request/:userid' do

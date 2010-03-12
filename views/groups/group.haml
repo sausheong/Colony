@@ -1,0 +1,65 @@
+=snippet :'/snippets/top'
+.span-24
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+  .span-15
+    
+    %h3 #{@group.name}
+    =@group.description
+      
+    %h3 Members
+    - @group.members.each do |user|
+      .span-1
+        %a{:href => "/user/#{user.nickname}"}
+          %img.span-1{:src => "#{user.photo_url}", :alt => "#{user.formatted_name}"} 
+    
+
+    %hr.space
+
+    %h3 Pages
+    .span-3.push-12.right
+      - if @group.user == @user
+        %a.button{:href =>"/group/#{@group.id}/page/add"} new page
+    - @group.pages.each do |page|
+      .span-11
+        %strong 
+          %a{:href => "/group/page/#{page.id}" } #{page.title}
+        .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
+      .span-4.last.right
+        %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/group/page/#{page.id}"} 
+          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+          - if @group.user == @user
+            %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} delete
+            %a.button{:href => "/group/page/edit/#{page.id}"} edit
+      %hr.space
+      %hr          
+    %hr.space
+    
+    %h3 Wall
+    =snippet :'/snippets/group_wall_box'
+      
+    %hr.space
+    
+    -@group.wall.posts.each do |post|
+      .span-2
+        %img.span-2{:src => "#{post.user.photo_url}"}
+      .span-4
+        #{post.user.formatted_name}
+        %br
+        #{post.created_at.strftime "%d %b %Y"}
+        %br
+        #{post.created_at.strftime "%I:%M %P"}
+      .span-8
+        #{post.text}
+      %hr
+    %hr.space  
+
+  .span-6.last
+    %h3 Group admin
+    .span-3
+      %img.span-3{:src => "#{@group.user.photo_url}"}  
+      %a{:href => "/user/#{@group.user.nickname}"} #{@group.user.formatted_name}
+    %hr.space
+    %h3 Your membership
+    =snippet :'/snippets/join_group'

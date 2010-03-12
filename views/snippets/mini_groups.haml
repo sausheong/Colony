@@ -1,0 +1,7 @@
+%ul
+  - @user.groups[0..4].each do |g|
+    %a{:href => "/group/#{g.id}"}
+      %li #{g.name}
+
+%hr.space    
+%a{:href => "/groups"} view all

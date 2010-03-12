@@ -1,6 +1,9 @@
-- @user.friends[0..11].each do |f|
+- user.friends[0..11].each do |f|
   %a{:href => "/user/#{f.nickname}"}
     %img.span-1{:src => "#{f.photo_url}"}
 
 %hr.space    
-%a{:href => "/friends"} view all
+- if user == @user
+  %a{:href => "/friends"} view all
+- else
+  %a{:href => "/friends/#{user.id}"} view all

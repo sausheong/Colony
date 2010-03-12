@@ -37,7 +37,13 @@ post "/after_login" do
   end
 end
 
-%w(pages friends photos messages events user).each {|feature| load "#{feature}.rb"}
+%w(pages friends photos messages events groups comments user).each {|feature| load "#{feature}.rb"}
+
+error NoMethodError do
+  session[:userid] = nil
+  redirect "/"  
+end
+
 
 before do
   @token = "http://#{env["HTTP_HOST"]}/after_login"

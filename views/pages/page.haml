@@ -9,4 +9,5 @@
       #{@page.body}
     
   .span-6.last
-    =snippet :'/snippets/pages'
+    %h3 Other pages
+    =snippet :'/snippets/mini_pages', {:locals => {:owner => @user, :owner_name => 'user'}}

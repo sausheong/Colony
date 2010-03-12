@@ -1,41 +1,34 @@
-get '/pages' do
-  haml :'/pages/manage'
+get '/user/pages' do
+  haml :'/pages/manage', {:locals => {:owner => 'user'}}
 end
 
-
-
-
-
-put '/page' do
+put '/user/page' do
   p = Page.create(:title => params[:title], :body => params[:body], :user => @user)
-  redirect "/page/#{p.id}"
+  redirect "/user/page/#{p.id}"
 end
 
-
-delete '/page/:id' do
+delete '/user/page/:id' do
   Page.get(params[:id]).destroy
-  redirect "/pages"
+  redirect "/user/pages"
 end
 
-get '/page/add' do
+get '/user/page/add' do
   @page = Page.new
-  haml :'/pages/add'
+  haml :'/pages/add', {:locals => {:owner => 'user'}}
 end
 
-
-get '/page/edit/:id' do
+get '/user/page/edit/:id' do
   @page = Page.get params[:id]
-  haml :'/pages/add'  
+  haml :'/pages/add', {:locals => {:owner => 'user'}}  
 end
 
-
-post '/page' do
+post '/user/page' do
   p = Page.get params[:id]
   p.update_attributes(:title => params[:title], :body => params[:body])
-  redirect "/page/#{p.id}"
+  redirect "/user/page/#{p.id}"
 end
 
-get '/page/:id' do
+get '/user/page/:id' do
   @page = Page.get params[:id]
-  haml :'/pages/page'
+  haml :'/pages/page', {:locals => {:owner => 'user'}}
 end

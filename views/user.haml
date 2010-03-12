@@ -5,13 +5,13 @@
     %img.span-3{:src => "#{@viewed_user.photo_url}"}
     =snippet :'/snippets/links'  
     %h3 Friends
-
+    =snippet :'/snippets/mini_friends', :locals => {:user => @viewed_user}
   .span-15
     
     %h3 Wall
     =snippet :'/snippets/wall_box'
     %hr.space
-    =snippet :'/snippets/activities'
+    =snippet :'/snippets/statuses'
 
   .span-6.last
     %h3 Information
@@ -23,4 +23,7 @@
     %h3 Photos  
     =snippet :'/snippets/mini_album'
     
-%hr.space
+    %h3 Pages
+    =snippet :'/snippets/mini_pages', {:locals => {:owner => @viewed_user, :owner_name => 'user'}}
+    
+    %hr.space

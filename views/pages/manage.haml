@@ -4,21 +4,24 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   .span-15
-    %h3 Pages
-    .span-2.push-12
-      %a.button{:href =>"/page/add"} new page
+    %hr.space
+    .span-11
+      %div.icons.icons_pages    
+      %strong{:style => 'vertical-align:bottom;font-size:18px;'} Pages
+    .span-4.last.right
+      %a.button{:href =>"/#{owner}/page/add"} new page
     
     .span-15      
-      %hr
+      %hr.space
       - @user.pages.each do |page|
-        .span-12
+        .span-11
           %strong 
-            %a{:href => "/page/#{page.id}" } #{page.title}
+            %a{:href => "/user/page/#{page.id}" } #{page.title}
           .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
-        .span-2
+        .span-4.last.right
           %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/page/#{page.id}"} 
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
-            %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} del
+            %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} delete
             %a.button{:href => "/page/edit/#{page.id}"} edit
         %hr.space
         %hr

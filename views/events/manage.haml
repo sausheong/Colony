@@ -4,28 +4,28 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   .span-15
-    %h3 Events
-    .span-4
+    %hr.space
+    .span-3
       %div.icons.icons_event
       %strong{:style => 'vertical-align:bottom;font-size:18px;'} Events
-    .span-6 &nbsp;
-    .span-2.push-2
+    .span-8 &nbsp;
+    .span-4.last.right
       %a.button{:href =>"/event/add"} new event
     
     .span-15      
-      %hr
+      %hr.space
       - @user.all_events.each do |event|
         .span-11
           %strong #{event.name}
           .quiet #{event.description}
           .quiet Venue : #{event.venue}
           .quiet Date/time : #{event.time.strftime "%I:%M %p"}, #{event.date.strftime "%d %b %Y"}
-        .span-3
+        .span-4.last.right
           %form{:id => "form_event_#{event.id}", :method => 'post', :action => "/event/#{event.id}"} 
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
             - if event.user == @user
               %a.button{:href => '#', :onclick => '$("#form_event_' + "#{event.id}" + '").submit();'} delete
-            %a.button{:href => "/event/#{event.id}"} respond              
+            %a.button{:href => "/event/#{event.id}"} view              
         %hr.space
         %hr
       

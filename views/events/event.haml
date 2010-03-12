@@ -29,12 +29,27 @@
     
     %hr.space
     
-    %h3 Awaiting reply
-    - @event.pending_users.each do |user|
-      .span-2
-        %a{:href => "/user/#{user.nickname}"}
-          %img.span-1{:src => "#{user.photo_url}", :alt => "#{user.formatted_name}"} 
+
     
+    %hr.space
+
+    %h3 Pages
+    .span-3.push-12.right
+      - if @event.user == @user
+        %a.button{:href =>"/event/#{@event.id}/page/add"} new page
+    - @event.pages.each do |page|
+      .span-12
+        %strong 
+          %a{:href => "/event/page/#{page.id}" } #{page.title}
+        .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
+      .span-2
+        %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/event/page/#{page.id}"} 
+          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+          - if @event.user == @user
+            %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} del
+            %a.button{:href => "/event/page/edit/#{page.id}"} edit
+      %hr.space
+      %hr          
     %hr.space
     
     %h3 Wall
@@ -54,9 +69,15 @@
       .span-8
         #{post.text}
       %hr
-    %hr.space
-    
+    %hr.space  
+
   .span-6.last
     %h3 Your RSVP
     =snippet :'/snippets/rsvp'
+    
+    %h3 Awaiting reply
+    - @event.pending_users.each do |user|
+      .span-2
+        %a{:href => "/user/#{user.nickname}"}
+          %img.span-1{:src => "#{user.photo_url}", :alt => "#{user.formatted_name}"}    
     

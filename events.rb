@@ -1,3 +1,40 @@
+# pages
+
+put '/event/page' do
+  event = Event.get params[:eventid]
+  p = Page.create(:title => params[:title], :body => params[:body], :user => @user, :event => event)
+  redirect "/event/page/#{p.id}"
+end
+
+delete '/event/page/:id' do
+  Page.get(params[:id]).destroy
+  redirect "/event/pages"
+end
+
+get '/event/:eventid/page/add' do
+  @page = Page.new
+  @event = Event.get params[:eventid]
+  haml :'/pages/add', {:locals => {:owner => 'event'}}
+end
+
+get '/event/page/edit/:id' do
+  @page = Page.get params[:id]
+  haml :'/pages/add', {:locals => {:owner => 'event'}}  
+end
+
+post '/event/page' do
+  p = Page.get params[:id]
+  p.update_attributes(:title => params[:title], :body => params[:body])
+  redirect "/event/page/#{p.id}"
+end
+
+get '/event/page/:id' do
+  @page = Page.get params[:id]
+  haml :'/pages/page', {:locals => {:owner => 'event'}}
+end
+
+# events
+
 get '/events' do
   haml :'/events/manage'
 end
@@ -42,16 +79,16 @@ post '/event/:id' do
   when 'yes'
     Pending.first(:user_id => @user.id, :event_id => event.id).destroy if event.pending_users.include? @user
     Decline.first(:user_id => @user.id, :event_id => event.id).destroy if event.declined_users.include? @user
-    Confirm.create(:confirmed_event => event, :confirmed_user => @user, :text => params[:text])
+    Confirm.create(:confirmed_event => event, :confirmed_user => @user)
   when 'no'
 
     Confirm.first(:user_id => @user.id, :event_id => event.id).destroy if event.confirmed_users.include? @user
     Pending.first(:user_id => @user.id, :event_id => event.id).destroy if event.pending_users.include? @user
-    Decline.create(:declined_user => @user, :declined_event => event, :text => params[:text]) 
+    Decline.create(:declined_user => @user, :declined_event => event) 
   when 'maybe'
     Confirm.first(:user_id => @user.id, :event_id => event.id).destroy if event.confirmed_users.include? @user
     Decline.first(:user_id => @user.id, :event_id => event.id).destroy if event.declined_users.include? @user
-    Pending.create(:pending_user => @user, :pending_event => event, :text => params[:text]) 
+    Pending.create(:pending_user => @user, :pending_event => event) 
   end
     
   redirect "/event/#{event.id}"  

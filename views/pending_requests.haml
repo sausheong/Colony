@@ -2,8 +2,10 @@
 .span-3
   %img.span-3{:src => "#{@user.photo_url}"}
   =snippet :'/snippets/links'
-.span-15
+.span-21.last
   %h3 Pending requests
+  - if @user.requests.empty?
+    You have no pending requests.
   - @user.requests.each do |req|
     .span-13
       .span-2
@@ -18,5 +20,4 @@
         %a{:href => "/friend/ignore/#{req.id}"} ignore
   
     %hr.space
-.span-6.last
-    
+   
