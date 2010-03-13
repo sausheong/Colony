@@ -1,0 +1,9 @@
+- if @user.confirmed_events.empty?
+  You are not going for any events.
+
+- else
+  You are going for the following events:
+  %ul
+  - @user.confirmed_events.each do |event|
+    %li{:style => 'margin-left: 1.3em;'}
+      %a{:href => "/event/#{event.id}"} #{event.name}

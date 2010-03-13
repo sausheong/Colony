@@ -31,3 +31,14 @@
       
   .span-6.last
     %h3  Suggestions
+    - if @user.friend_events.empty?
+      No suggested events
+    - else
+      Your friends are attending these events:
+      %ul
+        - @user.friend_events[0..9].each do |event|
+          %li
+            %a{:href => "/event/#{event.id}"} #{event.name}
+    
+    
+    

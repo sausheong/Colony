@@ -3,9 +3,9 @@
   .span-3
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
-  .span-15
+  .span-21.last
     %hr.space
-    .span-11
+    .span-17
       %div.icons.icons_photo
       %strong{:style => 'vertical-align:bottom;font-size:18px;'} 
         #{@user == @myself ? 'Your' : "#{@user.formatted_name}'s"} albums
@@ -13,36 +13,43 @@
       .span-4.last.right 
         %a.button{:href => '/album/add'} new album
     
-    - if @user != @myself and @myself.follows.include? @user
-      .span-15 You follow #{@user.formatted_name}
+    - if @user != @myself
+      - if @myself.friends.include? @user
+        .span-17.last You and #{@user.formatted_name} are friends.
+      - else
+        .span-17.last
+          #{@user.formatted_name} and you are not connected in Colony.
 
     %hr.space
         
     -@user.albums.each do |album|
       %hr.space
-      .span-10
-        %h4{:style => 'margin-bottom:5px;'} 
-          %a{:href => "/album/#{album.id}"} #{album.name}
-        %h5 #{album.description}
-        %hr.space
-        - unless album.photos.empty?
-          %h4{:style => 'font-style: italic;'} (#{album.photos.size} photos in this album, last photo uploaded on #{album.photos.last.created_at.strftime('%d-%b-%Y')})
       .span-3
         - if album.cover_photo
           %img.span-3{:src => "#{album.cover_photo.url_thumbnail}"}
         - elsif !album.photos.empty?
           %img.span-3{:src => "#{album.photos.first.url_thumbnail}"}
         - else
-          %img.span-3{:src => "/images/album_icon.png"}
-      .span-2.right   
+          %img.span-2{:src => "/images/album_icon.png"}
+
+      .span-18.last
+        %h4{:style => 'margin-bottom:5px;'} 
+          %a{:href => "/album/#{album.id}"} #{album.name}
+        #{album.description}
+        %hr.space
+        - unless album.photos.empty?
+          %div{:style => 'font-style: italic;'} (#{album.photos.size} photos in this album, last photo uploaded on #{album.photos.last.created_at.strftime('%d-%b-%Y')})
+
         - if @user == @myself
           - if album.photos.empty?
-            %form{:id => "form_#{album.id}", :method => 'post', :action => "/album/#{album.id}"} 
-              %input{:type => 'hidden', :name => '_method', :value => 'delete'}
-              %a{:href => '#', :onclick => '$("#form_' + "#{album.id}" + '").submit();'} remove
-          %a{:href => "/album/#{album.id}/upload"} upload
-  .span-6.last
-    %h3 Information
+            %div{:style => "width: 50px;float: left;"}
+              %form{:id => "form_#{album.id}", :method => 'post', :action => "/album/#{album.id}"} 
+                %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+                %a{:href => '#', :onclick => '$("#form_' + "#{album.id}" + '").submit();'} remove          
+          .span-2
+            %a{:href => "/album/#{album.id}/upload"} upload
+          %hr.space
+          %hr
 
 
 %hr.space      

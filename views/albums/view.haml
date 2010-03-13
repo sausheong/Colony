@@ -3,6 +3,7 @@
 .span-24.last
   .span-3
     %img.span-3{:src => "#{@album.user.photo_url}"}
+    =snippet :'/snippets/links'
   .span-15.last
     - if @user == @album.user
       %h3.edit_name{:style => 'margin-bottom: 0;'} #{@album.name}
@@ -31,10 +32,12 @@
       - @album.photos.each  do |photo|
         %a{:href => "/photo/#{photo.id}"}
           %img.span-2{:src => "#{photo.url_thumbnail}"}
-
+ 
   .span-6.last
-    %h3 Information
-
-    %h3 Photos  
+    %h3 Albums
+    %ul
+    - @user.albums.each do |album|
+      %li
+        %a{:href => "/album/#{album.id}"} #{album.name}        
 
 %hr.space       

@@ -4,7 +4,7 @@
   .span-3
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'
-  .span-20
+  .span-21.last
     %h3 Create a new page    
     Create a new page here. Use 
     %a{:href => 'http://daringfireball.net/projects/markdown/basics'} markdown
@@ -24,7 +24,7 @@
         %input.span-10{:type => 'text', :name => 'title', :value => "#{@page.title}"}
       %strong Body
       %p
-        %textarea.span-14{:name => 'body', :style => 'height: 350px;'} #{@page.body}
+        %textarea.span-18{:name => 'body', :style => 'height: 350px;'} #{@page.body}
       %p  
         - if @page.title.nil?
           %input{:type => 'submit', :value => 'create this page'}    

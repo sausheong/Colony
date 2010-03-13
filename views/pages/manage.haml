@@ -3,28 +3,29 @@
   .span-3
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
-  .span-15
+  .span-21.last
     %hr.space
     .span-11
       %div.icons.icons_pages    
       %strong{:style => 'vertical-align:bottom;font-size:18px;'} Pages
-    .span-4.last.right
+    .span-10.last.right
       %a.button{:href =>"/#{owner}/page/add"} new page
     
-    .span-15      
+    .span-21.last      
       %hr.space
+      - if @user.pages.empty?
+        You don't have any pages yet.
+
       - @user.pages.each do |page|
         .span-11
           %strong 
             %a{:href => "/user/page/#{page.id}" } #{page.title}
           .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
-        .span-4.last.right
+        .span-10.last.right
           %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/page/#{page.id}"} 
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
             %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} delete
-            %a.button{:href => "/page/edit/#{page.id}"} edit
+            %a.button{:href => "/user/page/edit/#{page.id}"} edit
         %hr.space
         %hr
-
-  .span-6.last
-    %h3  Suggestions      
+     

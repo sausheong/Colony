@@ -29,3 +29,12 @@
       
   .span-6.last
     %h3  Suggestions
+    - if @user.friend_groups.empty?
+      No suggested groups
+    - else
+      Your friends have joined the following groups:
+      %ul
+        - @user.friend_groups[0..9].each do |group|
+          %li
+            %a{:href => "/group/#{group.id}"} #{group.name}
+    

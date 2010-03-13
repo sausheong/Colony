@@ -7,19 +7,6 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   .span-15
-    .span-3
-      %a{:href => "/album/#{@photo.album.id}"} Back to album
-    - if @user == @photo.album.user
-      .span-3
-        %a{:href => '#', :id => 'add_annotation' } annotate photo
-      .span-3
-        %form{:id => "form_cover_photo", :method => 'post', :action => "/album/cover/#{@photo.id}"} 
-          %a{:href => '#', :onclick => '$("#form_cover_photo").submit();'} set album cover
-      .span-3
-        %form{:id => "form_photo_#{@photo.id}", :method => 'post', :action => "/photo/#{@photo.id}"} 
-          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
-          %a{:href => '#', :onclick => '$("#form_photo_' + "#{@photo.id}" + '").submit();'} delete photo      
-
 
     - if @user === @photo.album.user
       %h2.edit_title #{@photo.title}
@@ -31,27 +18,20 @@
     - else
       %h4 #{@photo.caption}
 
-    -@photo.comments.each do |comment|
-      .span-13
-        .span-2
-          %img.span-2{:src => "#{comment.user.photo_url}"}
-        .span-10
-          .span-10
-            %a.strong{:href => "/follow/#{comment.user.id}"} #{comment.user.formatted_name} says:
-          .span-10
-            =comment.text  
-      .span-2  
-        - if @user == comment.user
-          %form{:id => "form_comment_#{comment.id}", :method => 'post', :action => "/comment/#{comment.id}"} 
-            %input{:type => 'hidden', :name => '_method', :value => 'delete'}
-            %a{:href => '#', :onclick => '$("#form_comment_' + "#{comment.id}" + '").submit();'} [remove] 
-      %hr.space
+    .span-3
+      %a{:href => "/album/#{@photo.album.id}"} Back to album
+    - if @user == @photo.album.user
+      .span-3
+        %a{:href => '#', :id => 'add_annotation' } annotate photo
+      .span-3
+        %form{:id => "form_cover_photo", :method => 'post', :action => "/album/cover/#{@photo.id}"} 
+          %a{:href => '#', :onclick => '$("#form_cover_photo").submit();'} set album cover
+      .span-3.last
+        %form{:id => "form_photo_#{@photo.id}", :method => 'post', :action => "/photo/#{@photo.id}"} 
+          %input{:type => 'hidden', :name => '_method', :value => 'delete'}
+          %a{:href => '#', :onclick => '$("#form_photo_' + "#{@photo.id}" + '").submit();'} delete photo
 
-    %h3 Comments
-    %form{:method => 'post', :action => "/comment/#{@photo.id}"}
-      %textarea.span-13.update{:name => 'text', :rows => '3'}
-      %br
-      %input{:type => 'submit', :value => 'post comment'}
+    =snippet :'/snippets/comment_and_like', {:locals => {:item => @photo}}
 
   
   .span-6.last

@@ -1,6 +1,9 @@
-- user.friends[0..11].each do |f|
-  %a{:href => "/user/#{f.nickname}"}
-    %img.span-1{:src => "#{f.photo_url}"}
+- if user.friends.empty?
+  You don't have any friends in Colony! Start adding friends today!
+- else 
+  - user.friends[0..11].each do |f|
+    %a{:href => "/user/#{f.nickname}"}
+      %img.span-1{:src => "#{f.photo_url}"}
 
 %hr.space    
 - if user == @user

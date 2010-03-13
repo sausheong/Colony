@@ -4,36 +4,37 @@
     %img.span-3{:src => "#{@user.photo_url}"}
     =snippet :'/snippets/links'    
   
-  .span-20  
+  .span-21.last  
     %hr.space
     .span-4
       %div.icons.icons_messages
       %strong{:style => 'vertical-align:bottom;font-size:18px;'} #{@label}
-    .span-10 &nbsp;
-    .span-5
+    .span-12 &nbsp;
+    .span-5.last.right
       %a.button{:href =>'/messages/inbox'} inbox
       %a.button{:href =>'/messages/sent_box'} sent
       %a.button{:href =>'#', :onclick => "$('#compose_box').toggle();"} + new message
     %hr.space
     
-    #compose_box.span-15.push-1.hide
+    #compose_box.span-21.last.hide
       %form{:action => "/message/send", :method => 'post'}
         Subject
         %br
-        %input.span-10{:type => 'text', :name => 'subject'}
+        %input.span-15{:type => 'text', :name => 'subject'}
         %br
         Recipient (please enter nickname)
         %br
-        %input.span-10{:type => 'text', :name => 'recipient'}
+        %input.span-15{:type => 'text', :name => 'recipient'}
         %br
         Message
         %br
-        %textarea.span-10{:name => 'text'}
+        %textarea.span-15{:name => 'text'}
         %br
         %input{:type => 'submit', :value => 'send'}
       %hr.space
       
     #messages_list
+
       - @messages.each do |msg|
         - usr = params[:type] == 'inbox' ? msg.sender : msg.recipient
         .span-3
@@ -41,7 +42,7 @@
         .span-4 
           %a{:href => "/user/#{usr.nickname}"} #{usr.formatted_name}
           .quiet #{msg.created_at.strftime '%b %d at %I:%M %p'}
-        .span-11 
+        .span-13 
           .loud
             %a{:href => "/message/#{msg.id}"} 
               - if msg.read?
@@ -49,7 +50,7 @@
               -else
                 %strong #{msg.subject}
           #{msg.text[0,150]} ...
-        .span-1 
+        .span-1.last 
           %form{:id => "form_msg_#{msg.id}", :method => 'post', :action => "/message/#{msg.id}"} 
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
             %a{:href => '#', :onclick => '$("#form_msg_' + "#{msg.id}" + '").submit();', :class => 'remove_link'}

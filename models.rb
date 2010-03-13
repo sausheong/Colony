@@ -1,8 +1,14 @@
-%w(dm-core dm-timestamps dm-validations).each {|lib| gem lib, '=0.9.11'}
-%w(dm-core dm-timestamps dm-validations RMagick right_aws config).each  { |lib| require lib}
+%w(dm-core dm-timestamps dm-validations dm-aggregates).each {|lib| gem lib, '=0.9.11'}
+%w(dm-core dm-timestamps dm-validations dm-aggregates RMagick right_aws config).each  { |lib| require lib}
 include Magick
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://root:root@localhost/faceclone')
 S3 = RightAws::S3Interface.new(S3_CONFIG['AWS_ACCESS_KEY'], S3_CONFIG['AWS_SECRET_KEY'], {:multi_thread => true, :protocol => 'http', :port => 80} )
+
+module Commentable 
+  def people_who_likes
+    self.likes.collect { |l| "<a href='/user/#{l.user.nickname}'>#{l.user.formatted_name}</a>"  }
+  end  
+end
 
 class User
   include DataMapper::Resource
@@ -29,9 +35,9 @@ class User
   has n, :sent_messages, :class_name => 'Message', :child_key => [:user_id]
   has n, :received_messages, :class_name => 'Message', :child_key => [:recipient_id]
   has n, :confirms
-  has n, :confirmed_events, :through => :confirms, :class_name => 'Event', :child_key => [:user_id], :mutable => true
+  has n, :confirmed_events, :through => :confirms, :class_name => 'Event', :child_key => [:user_id], :date.gte => Date.today 
   has n, :pendings
-  has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:user_id], :mutable => true
+  has n, :pending_events, :through => :pendings, :class_name => 'Event', :child_key => [:user_id], :date.gte => Date.today 
   has n, :requests
   has n, :albums
   has n, :photos, :through => :albums
@@ -62,12 +68,11 @@ class User
   end  
 
   def feed
-    f = []
-    f += statuses
+    feed = [] + activities
     friends.each do |friend|
-      f += friend.activities
+      feed += friend.activities
     end
-    return f.sort {|x,y| y.created_at <=> x.created_at}
+    return feed.sort {|x,y| y.created_at <=> x.created_at}
   end
 
   def possessive_pronoun
@@ -91,6 +96,22 @@ class User
     confirmed_events + pending_events
   end
 
+  def friend_events
+    events = []
+    friends.each do |friend|
+      events += friend.confirmed_events
+    end
+    return events.sort {|x,y| y.time <=> x.time}    
+  end
+  
+  def friend_groups
+    groups = []
+    friends.each do |friend|
+      groups += friend.groups
+    end
+    groups
+  end
+
 end
 
 class Relationship
@@ -103,7 +124,7 @@ class Relationship
   after :save, :add_activity
   
   def add_activity
-    Activity.create(:user => user, :activity_type => 'relationship', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> and <a href='/user/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")
+    Activity.create(:user => user, :activity_type => 'relationship', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> and <a href='/user/#{follower.nickname}'>#{follower.formatted_name}</a> are now friends.")    
   end  
 end
 
@@ -132,7 +153,8 @@ end
 
 class Status
   include DataMapper::Resource
-
+  include Commentable
+  
   property :id, Serial
   property :text, String, :length => 160
   property :created_at,  DateTime  
@@ -155,7 +177,7 @@ class Status
         m.save 
       }
     end
-    Activity.create(:user => user, :activity_type => 'status', :text => "<a href='/user/#{user.nickname}'>#{user.formatted_name}</a> " + self.text )
+    Activity.create(:user => user, :activity_type => 'status', :text => self.text )
   end
 
   # general scrubbing 
@@ -188,7 +210,8 @@ class Status
 end
 
 class Activity
-  include DataMapper::Resource     
+  include DataMapper::Resource
+  include Commentable     
   
   property :id, Serial
   property :activity_type, String
@@ -201,6 +224,8 @@ end
 
 class Photo
   include DataMapper::Resource
+  include Commentable
+    
   attr_writer :tmpfile
   property :id,         Serial
   property :title,      String, :length => 255
@@ -371,7 +396,7 @@ class Event
   after :create, :add_activity
 
   def add_activity
-    Activity.create(:user => self.user, :activity_type => 'event', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a new event - <a href='/event/#{self.id}'>#{self.name}</a>.'")
+    Activity.create(:user => self.user, :activity_type => 'event', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a new event - <a href='/event/#{self.id}'>#{self.name}</a>.")
   end
       
 end
@@ -408,6 +433,7 @@ end
 
 class Page
   include DataMapper::Resource
+  include Commentable  
   property :id, Serial
   property :title, String
   property :body, Text
@@ -431,12 +457,14 @@ class Page
     end
   end
   
+
+  
 end
 
 
 class Post                    
   include DataMapper::Resource
-  
+  include Commentable  
   property :id, Serial
   property :text, Text
   property :created_at, DateTime
@@ -454,14 +482,13 @@ class Comment
   
   property :id, Serial
   property :text, Text
+  property :created_at, DateTime
   belongs_to :user
   belongs_to :page
   belongs_to :post
   belongs_to :photo
   belongs_to :activity
   belongs_to :status
-  has n, :likes
-  
   
 end
 
@@ -469,7 +496,12 @@ class Like
   include DataMapper::Resource
    property :id, Serial
    belongs_to :user
-   
+   belongs_to :page
+   belongs_to :post
+   belongs_to :photo
+   belongs_to :activity
+   belongs_to :status
+         
 end
 
 class Request

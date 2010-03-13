@@ -1,7 +1,10 @@
-%ul
-  - @user.groups[0..4].each do |g|
-    %a{:href => "/group/#{g.id}"}
-      %li #{g.name}
+- if @user.groups.empty?
+  You don't belong to any groups.
+- else
+  %ul
+    - @user.groups[0..4].each do |g|
+      %a{:href => "/group/#{g.id}"}
+        %li #{g.name}
 
-%hr.space    
+%hr.space{:style => 'height: 1px;'}    
 %a{:href => "/groups"} view all

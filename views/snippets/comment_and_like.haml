@@ -1,0 +1,32 @@
+.span-15.last
+  .span-2
+    %a{:href =>"#", :onclick => "$('#comment_box_#{item.class.to_s}_#{item.id}').toggle();$('#comment_box_#{item.class.to_s}_#{item.id}').focus();"} comment (#{item.comments.size})
+
+  .span-13.last
+    %form{:method => 'post', :action => "/like/#{item.class.to_s.downcase}/#{item.id}", :id => "form_like_#{item.class.to_s.downcase}_#{item.id}"}
+      %input{:type => 'hidden', :name => 'return_url', :value => request.url.to_s}
+      %input{:type => 'hidden', :name => '_method', :value => 'put'}
+    %a{:href =>"#", :onclick => "$('#form_like_#{item.class.to_s.downcase}_#{item.id}').submit();"} like
+    - unless item.likes.empty?
+      #{item.likes.size} people likes this. #{item.people_who_likes.join(', ')} liked it.
+.span-13.hide.last{:id => "comment_box_#{item.class.to_s}_#{item.id}"}
+  %form{:method => 'post', :action => "/comment/#{item.class.to_s.downcase}/#{item.id}"}
+    %textarea.span-10{:name => 'text', :style => 'height: 30px;'}
+    %input{:type => 'hidden', :name => 'return_url', :value => request.url.to_s}
+    %input{:type => 'hidden', :name => '_method', :value => 'put'}
+    %br
+    %input{:type => 'submit', :value => 'comment'}
+
+%hr.space{:style => 'height: 1px'}    
+
+- unless item.comments.empty? 
+  .span-14.push-1.last
+    - item.comments.each do |comment|
+      .span-1
+        %a{:href => "/user/#{comment.user.nickname}"}
+          %img.span-1{:src => "#{comment.user.photo_url}"}
+      .span-12.last.comment_box
+        #{comment.text}
+        %br
+        %em.quiet 
+          =time_ago_in_words(comment.created_at.to_time)

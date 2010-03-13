@@ -7,6 +7,11 @@
     %h3 #{@page.title}
     :markdown
       #{@page.body}
+  
+    %hr.space
+    
+    =snippet :'/snippets/comment_and_like', {:locals => {:item => @page}}
+
     
   .span-6.last
     %h3 Other pages
