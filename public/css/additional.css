@@ -213,3 +213,6 @@ div.time-picker li.selected {
   color: #fff;
 }
 .comment_box {padding:0.2em;padding-left: 1em; margin-bottom:0.5em;background:#E5ECF9;}
+
+h1 {font-size:1.4em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:1.2em;margin-bottom:0.75em;}
