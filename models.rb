@@ -278,8 +278,8 @@ class Photo
     return unless @tmpfile
     p @tmpfile
     p @tmpfile.open
-    p Image.read(@tmpfile)
-    img = Magick::Image.read(@tmpfile.open).first
+    p Image.read(@tmpfile.open)
+    img = Magick::Image.from_blob(@tmpfile.open.read).first
     display = img.resize_to_fit(500)  
     S3.put(s3_bucket, filename_display, display.to_blob)  
 
