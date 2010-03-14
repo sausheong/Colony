@@ -1,5 +1,4 @@
 get "/user/profile" do
-  puts @user.inspect
   haml :profile
 end
 
