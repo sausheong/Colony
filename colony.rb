@@ -24,7 +24,7 @@ post "/after_login" do
   profile = get_user_profile_with params[:token]
   user = User.find(profile["identifier"])
   if user.new_record?
-    photo = profile ["email"] ? "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(profile["email"])}" : profile["photo"] 
+    photo = profile ["photo"] ? "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(profile["email"])}" : profile["photo"] 
     unless user.update_attributes({:nickname => profile["identifier"].hash.to_s(36), :email => profile["email"], :photo_url => photo, :provider => profile["provider"]})
       flash[:error] = user.errors.values.join(",")
       redirect "/"
