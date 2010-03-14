@@ -277,12 +277,11 @@ class Photo
   def save_image_s3
     return unless @tmpfile
     p @tmpfile
-    p @tmpfile.open.read
     p Magick::Image.from_blob(@tmpfile.open.read)
-    img = Magick::Image.from_blob(@tmpfile.open.read)
+    img = Magick::Image.from_blob(@tmpfile.open.read).first
     p img
     p img.class
-    display = img.resize_to_fit(500)  
+    display = img.resize_to_fit(500, 500)  
     S3.put(s3_bucket, filename_display, display.to_blob)  
 
     t = img.resize_to_fit(150)
