@@ -1,0 +1,24 @@
+=snippet :'/snippets/top'
+
+.span-24.last
+  .span-3
+    %img.span-3{:src => "#{@user.photo_url}"}
+    =snippet :'/snippets/links'    
+    
+    %h3 Groups
+    =snippet :'/snippets/mini_groups'
+    %h3 Friends
+    =snippet :'/snippets/mini_friends', :locals => {:user => @user}
+  .span-15
+    
+    %h3 News feed
+      #{message}
+  
+  .span-6.last
+    %h3 Requests
+    =snippet :'/snippets/mini_requests'
+    %h3 Reach out
+    =snippet :'/snippets/invite_small'    
+    %h3 Events
+    =snippet :'/snippets/mini_events'    
+%hr.space
