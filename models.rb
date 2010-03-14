@@ -279,7 +279,7 @@ class Photo
     p @tmpfile
     p @tmpfile.open.read
     p Magick::Image.from_blob(@tmpfile.open.read)
-    img = Magick::Image.from_blob(@tmpfile.open.read).first
+    img = Magick::Image.from_blob(@tmpfile.open.read)
     p img
     p img.class
     display = img.resize_to_fit(500)  
