@@ -276,6 +276,7 @@ class Photo
 
   def save_image_s3
     return unless @tmpfile
+    p @tmpfile
     S3.put(s3_bucket, filename_display, @tmpfile)
 
     img = Magick::Image.read(@tmpfile.open).first
