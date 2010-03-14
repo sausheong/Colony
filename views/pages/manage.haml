@@ -22,7 +22,7 @@
             %a{:href => "/user/page/#{page.id}" } #{page.title}
           .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
         .span-10.last.right
-          %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/page/#{page.id}"} 
+          %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/user/page/#{page.id}"} 
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
             %a.button{:href => '#', :onclick => '$("#form_page_' + "#{page.id}" + '").submit();'} delete
             %a.button{:href => "/user/page/edit/#{page.id}"} edit
