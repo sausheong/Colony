@@ -97,7 +97,7 @@ get "/photo/:id" do
   @notes = notes.join(',')
   @prev_in_album = @photo.previous_in_album
   @next_in_album = @photo.next_in_album
-  haml :photo
+  haml :'/haml/photo'
 end
 
 
@@ -105,13 +105,13 @@ end
 get "/upload" do 
   @user = User.get(session[:userid])
   @albums = User.get(session[:userid]).albums
-  haml :upload
+  haml :'/photos/upload'
 end
 
 get "/album/:id/upload" do
   @user = User.get(session[:userid])
   @albums = [Album.get(params[:id])]
-  haml :upload  
+  haml :'/photos/upload'  
 end
 
 post "/upload" do

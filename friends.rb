@@ -3,17 +3,17 @@ get '/friends' do
     results = User.all(:nickname.like => params[:query] + '%') + User.all(:formatted_name.like => '%' + params[:query] + '%')
     @search_results = results.uniq[0..24]
   end  
-  haml :friends, :locals => {:show_search => true, :user => @user}
+  haml :'/friends/friends', :locals => {:show_search => true, :user => @user}
 end
 
 get '/friends/:id' do
   viewed_user = User.get params[:id]
-  haml :friends, :locals => {:show_search => false, :user => viewed_user}
+  haml :'/friends/friends', :locals => {:show_search => false, :user => viewed_user}
 end
 
 get '/request/:userid' do
   @friend = User.get(params[:userid])
-  haml :request
+  haml :'/friends/request'
 end
 
 put '/request' do
@@ -22,11 +22,11 @@ put '/request' do
 end
 
 get '/invite' do
-  haml :invite
+  haml :'/friends/invite'
 end
 
 get '/requests/pending' do
-  haml :pending_requests
+  haml :'/friends/pending_requests'
 end
 
 put '/friend/:requestid' do

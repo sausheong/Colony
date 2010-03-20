@@ -5,7 +5,7 @@ get '/messages/:type' do
   when 'sent_box' then @messages = Message.all(:user_id => @user.id, :order => [ :created_at.desc ]); @label = 'Sent'
   end
 
-  haml :messages
+  haml :'/messages/messages'
 end
 
 post '/message/send' do
@@ -25,7 +25,7 @@ get '/message/:id' do
   @message.read = true
   @message.save
   @messages = Message.all(:thread => @message.thread).sort{|m1, m2| m1.created_at <=> m2.created_at}
-  haml :message
+  haml :'/messages/message'
 end
 
 delete '/message/:id' do
