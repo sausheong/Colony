@@ -19,8 +19,8 @@
             %img.span-1{:src => "#{res.photo_url}"}          
           .span-12  
             - unless res == @user
-              %a{:href => "/user/#{res.nickname}"} #{res.formatted_name} 
-              (#{res.location})
+              %a{:href => "/user/#{res.nickname}"} #{res.formatted_name} (#{res.nickname}) 
+              from #{res.location}
               %br
               - if @user.friends.include? res
                 #{res.pronoun.capitalize} is your friend.

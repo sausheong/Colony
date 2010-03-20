@@ -97,7 +97,7 @@ get "/photo/:id" do
   @notes = notes.join(',')
   @prev_in_album = @photo.previous_in_album
   @next_in_album = @photo.next_in_album
-  haml :'/haml/photo'
+  haml :'/photos/photo'
 end
 
 
