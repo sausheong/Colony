@@ -185,7 +185,7 @@ class Status
     # process url
     urls = self.text.scan(URL_REGEXP)
     urls.each { |url|
-      tiny_url = open("http://tinyurl.com/api-create.php?url=#{url[0]}") {|s| s.read}    
+      tiny_url = RestClient.get "http://tinyurl.com/api-create.php?url=#{url[0]}"    
       self.text.sub!(url[0], "<a href='#{tiny_url}'>#{tiny_url}</a>")
     }        
     # process @
@@ -249,8 +249,8 @@ class Photo
   def filename_display; "#{id}.disp"; end  
   def filename_thumbnail; "#{id}.thmb"; end
   
-  def s3_url_thumbnail; S3.get_link(s3_bucket, filename_thumbnail); end 
-  def s3_url_display; S3.get_link(s3_bucket, filename_display); end
+  def s3_url_thumbnail; S3.get_link(s3_bucket, filename_thumbnail, Time.now.to_i + (24*60*60)); end 
+  def s3_url_display; S3.get_link(s3_bucket, filename_display, Time.now.to_i + (24*60*60)); end
 
   def url_thumbnail
     s3_url_thumbnail   
