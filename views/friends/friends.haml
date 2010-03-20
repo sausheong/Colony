@@ -24,8 +24,6 @@
               %br
               - if @user.friends.include? res
                 #{res.pronoun.capitalize} is your friend.
-              - elsif res.requests.each {|r| return true if r.from == @user}
-                You have already asked this user to be your friend. Wait for his reply!
               - else
                 %a{:href => "/request/#{res.id}"} add as friend
             - else
