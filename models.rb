@@ -53,10 +53,6 @@ class User
     Relationship.create(:user => user, :follower => self)  
   end
   
-  def pending_friends
-    followers - follows
-  end
-  
   def friends
     (followers + follows).uniq
   end         
@@ -454,9 +450,6 @@ class Page
       Activity.create(:user => self.user, :activity_type => 'page', :text => "<a href='/user/#{self.user.nickname}'>#{self.user.formatted_name}</a> created a page - <a href='/page/#{self.id}'>#{self.title}</a>.")
     end
   end
-  
-
-  
 end
 
 
@@ -510,6 +503,10 @@ class Request
    
    belongs_to :from, :class_name => User, :child_key => [:from_id]
    belongs_to :user
+
+	def approve
+		self.user.add_friend(self.from)
+	end
 end
     
 

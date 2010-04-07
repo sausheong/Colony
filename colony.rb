@@ -37,7 +37,7 @@ post "/after_login" do
   end
 end
 
-%w(pages friends photos messages events groups comments user).each {|feature| load "#{feature}.rb"}
+%w(pages friends photos messages events groups comments user helpers).each {|feature| load "#{feature}.rb"}
 
 error NoMethodError do
   session[:userid] = nil
@@ -50,4 +50,3 @@ before do
   @user = User.get(session[:userid]) if session[:userid]
 end
 
-load "helpers.rb"

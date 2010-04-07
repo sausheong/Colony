@@ -31,7 +31,7 @@ end
 
 put '/friend/:requestid' do
   req = Request.get(params[:requestid])
-  req.user.add_friend(req.from)
+  req.approve
   req.destroy
   redirect '/requests/pending'
 end
