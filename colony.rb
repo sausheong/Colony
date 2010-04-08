@@ -6,7 +6,8 @@ set :show_exceptions, false
 use Rack::Flash
 
 get "/" do
-  if session[:userid].nil? then 
+  if session[:userid].nil? then
+    @token = "http://#{env["HTTP_HOST"]}/after_login" 
     haml :login 
   else
     @all = @user.feed
@@ -46,7 +47,7 @@ end
 
 
 before do
-  @token = "http://#{env["HTTP_HOST"]}/after_login"
+
   @user = User.get(session[:userid]) if session[:userid]
 end
 

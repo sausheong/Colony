@@ -29,9 +29,3 @@ get '/requests/pending' do
   haml :'/friends/pending_requests'
 end
 
-put '/friend/:requestid' do
-  req = Request.get(params[:requestid])
-  req.approve
-  req.destroy
-  redirect '/requests/pending'
-end
