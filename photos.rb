@@ -86,7 +86,6 @@ end
 # show this photo
 get "/photo/:id" do
   @photo = Photo.get params[:id]
-  @user = User.get session[:userid]
   halt 403, 'This is a private photo' if @photo.privacy == 'Private' and @user != @photo.album.user
   
 	notes = @photo.annotations.collect do |n|
@@ -127,7 +126,7 @@ end
 # add annotation
 post "/annotation/:photo_id" do
   photo = Photo.get params[:photo_id]
-  note = Annotation.create(:x => params["annotation"]["x1"], 
+  note = Annotation.new(:x => params["annotation"]["x1"], 
                            :y => params["annotation"]["y1"], 
                            :height => params["annotation"]["height"],
                            :width => params["annotation"]["width"],
