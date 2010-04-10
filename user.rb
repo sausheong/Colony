@@ -35,7 +35,7 @@ get "/user/:nickname" do
   @myself = @user
   @viewed_user = User.first(:nickname => params[:nickname])
   @viewing_self = (@viewed_user == @myself)
-  all = [] + @viewed_user.activities + @viewed_user.wall.posts + @viewed_user.statuses
+  all = [] + @viewed_user.activities + @viewed_user.wall.posts
   @all = all.sort {|x,y| y.created_at <=> x.created_at}
   haml :user
 end
