@@ -238,7 +238,7 @@ class Photo
   has n, :likes
   
   after :save, :save_image_s3
-  after :save, :add_activity
+  after :create, :add_activity
   after :destroy, :destroy_image_s3
 
   
