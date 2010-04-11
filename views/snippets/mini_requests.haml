@@ -6,7 +6,7 @@
   No pending requests
 %hr.space  
 - unless @user.pending_events.empty?
-  .icons.icons_pending_events
+  .icons.icons_event
   %a{:href => '/events'}    
     You have #{@user.pending_events.size} pending event(s). 
 - else
