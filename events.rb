@@ -64,7 +64,6 @@ end
 
 get '/event/:id' do
   @event = Event.get params[:id]
-  
   haml :'/events/event'
 end
 

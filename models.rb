@@ -105,7 +105,7 @@ class User
     friends.each do |friend|
       groups += friend.groups
     end
-    groups
+    groups - self.groups
   end
 
 end
