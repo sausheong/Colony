@@ -25,7 +25,11 @@
             %input{:type => 'hidden', :name => '_method', :value => 'delete'}
             - if event.user == @user
               %a.button{:href => '#', :onclick => '$("#form_event_' + "#{event.id}" + '").submit();'} delete
-            %a.button{:href => "/event/#{event.id}"} view              
+            %a.button{:href => "/event/#{event.id}"} 
+              - if @user.pending_events.include? event
+                pending
+              - else
+                view
         %hr.space
         %hr
       
