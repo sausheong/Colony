@@ -3,8 +3,8 @@
   %a{:href => '/requests/pending'}    
     You have #{@user.requests.size} friend request(s). 
 - else
-  No pending requests
-%hr.space  
+  No pending friend requests
+%br
 - unless @user.pending_events.empty?
   .icons.icons_event
   %a{:href => '/events'}    
