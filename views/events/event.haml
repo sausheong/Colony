@@ -42,7 +42,7 @@
         %strong 
           %a{:href => "/event/page/#{page.id}" } #{page.title}
         .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
-      .span-2
+      .span-3.right.last
         %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/event/page/#{page.id}"} 
           %input{:type => 'hidden', :name => '_method', :value => 'delete'}
           - if @event.user == @user
