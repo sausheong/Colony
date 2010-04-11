@@ -18,8 +18,7 @@
 
       - @user.pages.each do |page|
         .span-11
-          %strong 
-            %a{:href => "/user/page/#{page.id}" } #{page.title}
+          %a{:href => "/user/page/#{page.id}" } #{page.title}
           .quiet Date created : #{page.created_at.strftime "%I:%M %p, %d %b %Y"}
         .span-10.last.right
           %form{:id => "form_page_#{page.id}", :method => 'post', :action => "/user/page/#{page.id}"} 
